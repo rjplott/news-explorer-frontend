@@ -1,21 +1,58 @@
 import './App.css';
+import Main from '../Main/Main';
+import { Route, BrowserRouter } from 'react-router-dom';
 
 function App() {
+  const cards = [
+    {
+      date: 'January 2nd, 2020',
+      title: 'Test Card 1',
+      source: 'Joe.com',
+      tag: 'Dummy card',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis sagittis mollis. Nulla condimentum elit sapien, eget iaculis odio mattis sit amet. Curabitur eu tellus libero. Aliquam bibendum leo quis tellus auctor ullamcorper. Phasellus iaculis maximus ipsum nec mattis. Sed nisl enim, fermentum sit amet vulputate id, mattis ac tortor.',
+      image:
+        'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
+    },
+    {
+      date: 'January 2nd, 2020',
+      title: 'Test Card 2',
+      source: 'Joe.com',
+      tag: 'Dummy card',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis sagittis mollis. Nulla condimentum elit sapien, eget iaculis odio mattis sit amet. Curabitur eu tellus libero. Aliquam bibendum leo quis tellus auctor ullamcorper. Phasellus iaculis maximus ipsum nec mattis. Sed nisl enim, fermentum sit amet vulputate id, mattis ac tortor.',
+      image:
+        'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
+    },
+    {
+      date: 'January 2nd, 2020',
+      title: 'Test Card 3',
+      source: 'Joe.com',
+      tag: 'Dummy card',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis sagittis mollis. Nulla condimentum elit sapien, eget iaculis odio mattis sit amet. Curabitur eu tellus libero. Aliquam bibendum leo quis tellus auctor ullamcorper. Phasellus iaculis maximus ipsum nec mattis. Sed nisl enim, fermentum sit amet vulputate id, mattis ac tortor.',
+      image:
+        'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
+    },
+    {
+      date: 'January 2nd, 2020',
+      title: 'Test Card 4',
+      source: 'Joe.com',
+      tag: 'Dummy card',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis sagittis mollis. Nulla condimentum elit sapien, eget iaculis odio mattis sit amet. Curabitur eu tellus libero. Aliquam bibendum leo quis tellus auctor ullamcorper. Phasellus iaculis maximus ipsum nec mattis. Sed nisl enim, fermentum sit amet vulputate id, mattis ac tortor.',
+      image:
+        'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
+    },
+  ];
+
   return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <Route exact path="/">
+          <Main cards={cards} />
+        </Route>
+      </BrowserRouter>
     </div>
   );
 }
