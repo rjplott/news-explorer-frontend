@@ -1,14 +1,20 @@
 .header {
+  box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.2);
+}
+
+.header__wrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  box-shadow: inset 0px -1px 0px rgba(255, 255, 255, 0.2);
+  max-width: 1232px;
+  margin: 0 auto;
+  width: calc(100% - 208px);
 }
 
 .header__title {
   font-family: 'Roboto Slab', serif;
   font-weight: 700;
-  margin: 30px 0 26px 104px;
+  margin: 30px 0 26px 0;
   font-size: 20px;
   line-height: 1.2;
   color: #fff;

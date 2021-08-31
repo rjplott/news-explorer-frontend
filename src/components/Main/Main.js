@@ -1,4 +1,6 @@
 import SearchForm from '../SearchForm/SearchForm';
+import Preloader from '../Preloader/Preloader';
+import NoResults from '../NoResults/NoResults';
 import NewsCardList from '../NewsCardList/NewsCardList';
 import About from '../About/About';
 import Footer from '../Footer/Footer';
@@ -8,7 +10,8 @@ export default function Main({ cards }) {
     <div className="page">
       <SearchForm />
       <main className="main">
-        <NewsCardList cards={cards} />
+        {/* <NewsCardList cards={cards} /> */}
+        <NoResults />
         <About />
       </main>
       <Footer />

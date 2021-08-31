@@ -4,8 +4,10 @@ import './Header.css';
 export default function Header() {
   return (
     <header className="header">
-      <h1 className="header__title">NewsExplorer</h1>
-      <Navigation isLoggedIn={true} user="Joe" />
+      <div className="header__wrapper">
+        <h1 className="header__title">NewsExplorer</h1>
+        <Navigation isLoggedIn={false} user="Joe" />
+      </div>
     </header>
   );
 }
