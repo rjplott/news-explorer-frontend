@@ -4,7 +4,7 @@ import Header from '../Header/Header';
 export default function SearchForm() {
   return (
     <div className="news-search">
-      <Header />
+      <Header route="home" />
       <form className="seach-form">
         <h2 className="search-form__title">What's going on in the world?</h2>
         <p className="search-form__subtitle">

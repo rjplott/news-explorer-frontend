@@ -1,6 +1,7 @@
 import './App.css';
 import Main from '../Main/Main';
-import { Route, BrowserRouter } from 'react-router-dom';
+import SavedNews from '../SavedNews/SavedNews';
+import { Route, Switch, BrowserRouter } from 'react-router-dom';
 
 function App() {
   const cards = [
@@ -49,9 +50,16 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Route exact path="/">
-          <Main cards={cards} />
-        </Route>
+        <Switch>
+          <Route exact path="/">
+            <Main cards={cards} />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route path="/saved">
+            <SavedNews />
+          </Route>
+        </Switch>
       </BrowserRouter>
     </div>
   );

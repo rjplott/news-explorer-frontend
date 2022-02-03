@@ -65,3 +65,15 @@
 .navigation__user-name {
   margin: 10px;
 }
+
+.navigation__link_light-theme {
+  color: #1a1b22;
+}
+
+.navigation__link_type_logout_light-theme {
+  border: 1px solid #1a1b22;
+}
+
+.navigation__link_current_light-theme {
+  border-bottom: 3px solid #1a1b22;
+}

@@ -10,7 +10,8 @@ export default function Main({ cards }) {
     <div className="page">
       <SearchForm />
       <main className="main">
-        {/* <NewsCardList cards={cards} /> */}
+        <NewsCardList cards={cards} />
+        <Preloader />
         <NoResults />
         <About />
       </main>
