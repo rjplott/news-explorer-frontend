@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import './Navigation.css';
 import logout from '../../images/logout.svg';
+import logoutLight from '../../images/logout-light.svg';
 
 export default function Navigation({ isLoggedIn, user, route }) {
   if (isLoggedIn) {
@@ -10,7 +11,7 @@ export default function Navigation({ isLoggedIn, user, route }) {
           <Link
             to="/"
             className={`navigation__link navigation__link_type_home-logged-in ${
-              route === 'saved'
+              route === 'saved-news'
                 ? 'navigation__link_light-theme '
                 : 'navigation__link_current'
             }`}
@@ -20,9 +21,9 @@ export default function Navigation({ isLoggedIn, user, route }) {
         </li>
         <li className="navigation__list-item">
           <Link
-            to="/saved"
+            to="/saved-news"
             className={`navigation__link navigation__link_type_saved ${
-              route === 'saved'
+              route === 'saved-news'
                 ? 'navigation__link_light-theme navigation__link_current navigation__link_current_light-theme'
                 : ''
             }`}
@@ -34,14 +35,14 @@ export default function Navigation({ isLoggedIn, user, route }) {
           <Link
             to="/"
             className={`navigation__link navigation__link_type_logout ${
-              route === 'saved'
+              route === 'saved-news'
                 ? 'navigation__link_light-theme navigation__link_type_logout_light-theme'
                 : ''
             }`}
           >
             <span className="navigation__user-name">{user}</span>
             <img
-              src={logout}
+              src={route === 'saved-news' ? logoutLight : logout}
               alt="Logout icon"
               className="navigation__logout-icon"
             />

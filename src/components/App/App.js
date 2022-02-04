@@ -48,7 +48,7 @@ function App() {
   ];
 
   return (
-    <div className="App">
+    <div className="app">
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
@@ -56,8 +56,8 @@ function App() {
           </Route>
         </Switch>
         <Switch>
-          <Route path="/saved">
-            <SavedNews />
+          <Route path="/saved-news">
+            <SavedNews savedCards={cards} />
           </Route>
         </Switch>
       </BrowserRouter>
