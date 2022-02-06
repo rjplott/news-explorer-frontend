@@ -33,3 +33,9 @@
   font-weight: 400;
   src: url('./source-sans-pro-400.woff');
 }
+
+@font-face {
+  font-family: 'Inter';
+  font-weight: 400;
+  src: url('./inter-400.woff');
+}

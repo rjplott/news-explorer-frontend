@@ -2,7 +2,7 @@ import NewsCard from '../NewsCard/NewsCard';
 import React from 'react';
 import './NewsCardList.css';
 
-export default function NewsCardList({ cards }) {
+export default function NewsCardList({ cards, isLoggedIn }) {
   const [numCards, setNumCards] = React.useState(3);
   const [displayCards, setDisplayCard] = React.useState(
     cards.slice(0, numCards)
@@ -19,7 +19,7 @@ export default function NewsCardList({ cards }) {
       <h2 className="news-card-list__title">Search results</h2>
       <div className="news-card-list__card-wrapper">
         {displayCards.map((card, index) => (
-          <NewsCard key={index} card={card} currentView="home" />
+          <NewsCard key={index} card={card} isLoggedIn={isLoggedIn} />
         ))}
       </div>
       <button

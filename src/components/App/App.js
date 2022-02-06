@@ -2,7 +2,7 @@ import './App.css';
 import Main from '../Main/Main';
 import SavedNews from '../SavedNews/SavedNews';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
-
+import { useState } from 'react';
 function App() {
   const cards = [
     {
@@ -47,17 +47,42 @@ function App() {
     },
   ];
 
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [username, setUsername] = useState('');
+
+  const handleLogin = () => {
+    setUsername('Placeholder');
+    setIsLoggedIn(true);
+  };
+  const handleLogout = () => setIsLoggedIn(false);
+  const handleRegister = (name) => {
+    setUsername(name);
+    setIsLoggedIn(true);
+  };
+
   return (
     <div className="app">
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
-            <Main cards={cards} />
+            <Main
+              isLoggedIn={isLoggedIn}
+              cards={cards}
+              handleLogin={handleLogin}
+              handleLogout={handleLogout}
+              handleRegister={handleRegister}
+              name={username}
+            />
           </Route>
         </Switch>
         <Switch>
           <Route path="/saved-news">
-            <SavedNews savedCards={cards} />
+            <SavedNews
+              isLoggedIn={isLoggedIn}
+              savedCards={cards}
+              handleLogout={handleLogout}
+              name={username}
+            />
           </Route>
         </Switch>
       </BrowserRouter>

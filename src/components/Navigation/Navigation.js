@@ -3,7 +3,13 @@ import './Navigation.css';
 import logout from '../../images/logout.svg';
 import logoutLight from '../../images/logout-light.svg';
 
-export default function Navigation({ isLoggedIn, user, route }) {
+export default function Navigation({
+  isLoggedIn,
+  name,
+  path,
+  onSignInClick,
+  handleLogout,
+}) {
   if (isLoggedIn) {
     return (
       <ul className="navigation">
@@ -11,7 +17,7 @@ export default function Navigation({ isLoggedIn, user, route }) {
           <Link
             to="/"
             className={`navigation__link navigation__link_type_home-logged-in ${
-              route === 'saved-news'
+              path === '/saved-news'
                 ? 'navigation__link_light-theme '
                 : 'navigation__link_current'
             }`}
@@ -23,7 +29,7 @@ export default function Navigation({ isLoggedIn, user, route }) {
           <Link
             to="/saved-news"
             className={`navigation__link navigation__link_type_saved ${
-              route === 'saved-news'
+              path === '/saved-news'
                 ? 'navigation__link_light-theme navigation__link_current navigation__link_current_light-theme'
                 : ''
             }`}
@@ -31,18 +37,18 @@ export default function Navigation({ isLoggedIn, user, route }) {
             Saved Articles
           </Link>
         </li>
-        <li className="navigation__list-item">
+        <li className="navigation__list-item" onClick={handleLogout}>
           <Link
             to="/"
             className={`navigation__link navigation__link_type_logout ${
-              route === 'saved-news'
+              path === '/saved-news'
                 ? 'navigation__link_light-theme navigation__link_type_logout_light-theme'
                 : ''
             }`}
           >
-            <span className="navigation__user-name">{user}</span>
+            <span className="navigation__user-name">{name}</span>
             <img
-              src={route === 'saved-news' ? logoutLight : logout}
+              src={path === '/saved-news' ? logoutLight : logout}
               alt="Logout icon"
               className="navigation__logout-icon"
             />
@@ -62,7 +68,11 @@ export default function Navigation({ isLoggedIn, user, route }) {
           </Link>
         </li>
         <li className="navigation__list-item">
-          <Link to="/" className="navigation__link navigation__link_type_login">
+          <Link
+            to="/"
+            className="navigation__link navigation__link_type_login"
+            onClick={onSignInClick}
+          >
             Sign In
           </Link>
         </li>

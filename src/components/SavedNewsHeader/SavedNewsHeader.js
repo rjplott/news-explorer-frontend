@@ -2,14 +2,14 @@ import React from 'react';
 import Header from '../Header/Header';
 import './SavedNewsHeader.css';
 
-const SavedNewsHeader = ({ user, savedArticles }) => {
+const SavedNewsHeader = ({ name, savedArticles, isLoggedIn, handleLogout }) => {
   return (
     <section className="saved-news-header">
-      <Header route="saved-news" />
+      <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} name={name} />
       <div className="saved-news-header__text-wrapper">
         <p className="saved-news-header__intro">Saved articles</p>
         <h1 className="saved-news-header__title">
-          {`${user}, you have ${savedArticles.length} saved articles`}
+          {`${name}, you have ${savedArticles.length} saved articles`}
         </h1>
         <p className="saved-news-header__keywords">
           By keywords:

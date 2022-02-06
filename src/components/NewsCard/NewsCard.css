@@ -12,6 +12,8 @@
   position: absolute;
   top: 24px;
   right: 24px;
+  min-width: 40px;
+  min-height: 40px;
 }
 
 .news-card__image {
@@ -69,10 +71,52 @@
 }
 
 .news-card__save-button {
-  min-width: 40px;
-  min-height: 40px;
   border: none;
   background-color: #fff;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+}
+
+.news-card__delete-button {
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background-color: #fff;
+}
+
+.news-card__tag {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 8px 22px;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.news-card__tooltip {
+  margin: 0;
+  position: absolute;
+  top: 24px;
+  right: 69px;
+  box-sizing: border-box;
+  height: 40px;
+  background: #fff;
+  opacity: 0;
+  padding: 11px 26px;
+  border-radius: 10px;
+  font-family: Roboto, sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  transition: opacity ease 1s;
+}
+
+.news-card__tooltip_visible {
+  opacity: 1;
 }

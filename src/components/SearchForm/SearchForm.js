@@ -1,10 +1,20 @@
 import './SearchForm.css';
 import Header from '../Header/Header';
 
-export default function SearchForm() {
+export default function SearchForm({
+  isLoggedIn,
+  onSignInClick,
+  handleLogout,
+  name,
+}) {
   return (
     <div className="news-search">
-      <Header route="home" />
+      <Header
+        isLoggedIn={isLoggedIn}
+        onSignInClick={onSignInClick}
+        handleLogout={handleLogout}
+        name={name}
+      />
       <form className="seach-form">
         <h2 className="search-form__title">What's going on in the world?</h2>
         <p className="search-form__subtitle">

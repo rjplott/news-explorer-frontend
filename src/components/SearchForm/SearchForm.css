@@ -57,4 +57,14 @@
   font-size: 18px;
   line-height: 24px;
   color: #ffffff;
+  cursor: pointer;
+  transition: background-color ease-in 0.15s;
+}
+
+.search-form__submit-button:hover {
+  background-color: #347eff;
+}
+
+.search-form__submit-button:active {
+  background-color: #2a65cc;
 }
