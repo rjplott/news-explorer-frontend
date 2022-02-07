@@ -1,11 +1,11 @@
 import './PopupWithForm.css';
+import { useRef, useEffect } from 'react';
 
 const PopupWithForm = ({
   name,
   title,
   children,
   isOpen,
-  isVisible,
   isValid,
   onClose,
   buttonText,
@@ -13,11 +13,33 @@ const PopupWithForm = ({
   linkText,
   onLinkClick,
 }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const handleClickEscapeClose = (e) => {
+      if (
+        isOpen &&
+        ref.current &&
+        !ref.current.contains(e.target) &&
+        (!e.key || e.key === 'Escape')
+      ) {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleClickEscapeClose);
+    document.addEventListener('mousedown', handleClickEscapeClose);
+
+    return () => {
+      document.removeEventListener('keydown', handleClickEscapeClose);
+      document.removeEventListener('mousedown', handleClickEscapeClose);
+    };
+  }, [isOpen, onClose]);
+
   return (
     <div
-      className={`popup popup_purpose_${name} ${isOpen ? 'popup_opened' : ''} ${
-        isVisible ? 'popup_visible' : ''
-      }`}
+      className={`popup popup_purpose_${name} ${isOpen ? 'popup_opened' : ''}`}
+      ref={ref}
     >
       <div className="popup__wrapper">
         <button
@@ -26,7 +48,12 @@ const PopupWithForm = ({
           className="popup__close"
           onClick={onClose}
         ></button>
-        <form className="popup__form" name={`${name}-form`} onSubmit={onSubmit}>
+        <form
+          className="popup__form"
+          name={`${name}-form`}
+          onSubmit={onSubmit}
+          noValidate
+        >
           <h2 className="popup__form-title">{title}</h2>
           {children}
           <button

@@ -7,6 +7,7 @@
   left: 0;
   z-index: 1;
   visibility: hidden;
+  display: none;
   opacity: 0;
   transition: opacity 0.25s ease-in;
 }
@@ -76,6 +77,19 @@
   border-bottom: 1px solid #000;
 }
 
+.popup__error {
+  font-family: Inter, sans-serif;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 15px;
+  color: #ff0000;
+  overflow: visible;
+  text-align: left;
+  position: relative;
+  top: -25px;
+  margin-left: 36px;
+}
+
 .popup__submit {
   background: #2f71e5;
   box-shadow: 0px 5px 15px rgba(14, 26, 57, 0.2);
@@ -109,12 +123,9 @@
 }
 
 .popup_opened {
-  display: block;
   opacity: 1;
-}
-
-.popup_visible {
   visibility: visible;
+  display: block;
 }
 
 .popup__submit_disabled {

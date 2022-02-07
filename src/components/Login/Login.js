@@ -1,20 +1,17 @@
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import { useState } from 'react';
-const Login = ({
-  isOpen,
-  isVisible,
-  handleClosePopup,
-  handleLinkClick,
-  handleLogin,
-}) => {
+const Login = ({ isOpen, handleClosePopup, handleLinkClick, handleLogin }) => {
   const [email, setEmail] = useState('');
   const [emailIsValid, setEmailIsValid] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState('');
   const [password, setPassword] = useState('');
   const [passwordIsValid, setPasswordIsValid] = useState(false);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
   const [isFormValid, setIsFormValid] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
+    setEmailErrorMessage(e.target.validationMessage);
     if (emailIsValid !== e.target.validity.valid) {
       setEmailIsValid(e.target.validity.valid);
       setIsFormValid(passwordIsValid && e.target.validity.valid);
@@ -23,6 +20,7 @@ const Login = ({
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    setPasswordErrorMessage(e.target.validationMessage);
     if (passwordIsValid !== e.target.validity.valid) {
       setPasswordIsValid(e.target.validity.valid);
       setIsFormValid(emailIsValid && e.target.validity.valid);
@@ -34,7 +32,6 @@ const Login = ({
       name="login"
       title="Login"
       isOpen={isOpen}
-      isVisible={isVisible}
       onClose={handleClosePopup}
       buttonText="Sign in"
       onSubmit={(e) => {
@@ -61,7 +58,9 @@ const Login = ({
         value={email}
         onChange={handleEmailChange}
       />
-      <span className="popup__error login-enter-password-error"></span>
+      <span className="popup__error login-enter-email-error">
+        {emailErrorMessage}
+      </span>
       <label className="popup__input-label" htmlFor="login-enter-password">
         Password
       </label>
@@ -77,7 +76,9 @@ const Login = ({
         value={password}
         onChange={handlePasswordChange}
       />
-      <span className="popup__error login-enter-email-password"></span>
+      <span className="popup__error login-enter-password-error">
+        {passwordErrorMessage}
+      </span>
     </PopupWithForm>
   );
 };

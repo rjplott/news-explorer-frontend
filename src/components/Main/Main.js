@@ -16,41 +16,37 @@ export default function Main({
   handleRegister,
   name,
 }) {
-  const [isPopupOpen, setIsPopupOpen] = useState(true);
-  const [isLoginVisible, setIsLoginVisible] = useState(false);
-  const [isRegisterVisible, setIsRegisterVisible] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   const handleOpenLogin = () => {
-    setIsRegisterVisible(false);
-    setIsLoginVisible(true);
-    setIsPopupOpen(true);
+    setIsRegisterOpen(false);
+    setIsLoginOpen(true);
+  };
+
+  const handleOpenRegister = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(true);
+    console.log(isRegisterOpen);
   };
 
   const handleClosePopups = () => {
-    setIsPopupOpen(false);
-    setIsRegisterVisible(false);
-    setIsLoginVisible(false);
-  };
-
-  const handleSwapPopups = () => {
-    setIsLoginVisible((previousState) => !previousState);
-    setIsRegisterVisible((previousState) => !previousState);
+    setIsLoginOpen(false);
+    setIsRegisterOpen(false);
   };
 
   return (
     <div className="page">
       <Register
-        isOpen={isPopupOpen}
-        isVisible={isRegisterVisible}
+        isOpen={isRegisterOpen}
         handleClosePopup={handleClosePopups}
-        handleLinkClick={handleSwapPopups}
+        handleLinkClick={handleOpenLogin}
         handleRegister={handleRegister}
       />
       <Login
-        isOpen={isPopupOpen}
-        isVisible={isLoginVisible}
+        isOpen={isLoginOpen}
         handleClosePopup={handleClosePopups}
-        handleLinkClick={handleSwapPopups}
+        handleLinkClick={handleOpenRegister}
         handleLogin={handleLogin}
       />
       <SearchForm
