@@ -3,7 +3,31 @@ import Main from '../Main/Main';
 import SavedNews from '../SavedNews/SavedNews';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useState } from 'react';
+import fetchNews from '../../utils/api';
+
 function App() {
+  const [newsCards, setNewsCards] = useState([]);
+  const [numCards, setNumCards] = useState(3);
+  const [displayCards, setDisplayCards] = useState(
+    newsCards.slice(0, numCards)
+  );
+  const [isSearching, setIsSearching] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+
+  const handleRequestNews = (search) => {
+    setIsSearching(true);
+    setHasSearched(true);
+    setNumCards(3);
+
+    fetchNews(search)
+      .then((data) => {
+        setNewsCards(() => data.articles);
+        setDisplayCards(() => data.articles.slice(0, 3));
+        setIsSearching(() => false);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const cards = [
     {
       date: 'January 2nd, 2020',
@@ -67,11 +91,18 @@ function App() {
           <Route exact path="/">
             <Main
               isLoggedIn={isLoggedIn}
-              cards={cards}
+              cards={newsCards}
               handleLogin={handleLogin}
               handleLogout={handleLogout}
               handleRegister={handleRegister}
               name={username}
+              handleRequestNews={handleRequestNews}
+              numCards={numCards}
+              displayCards={displayCards}
+              setNumCards={setNumCards}
+              setDisplayCards={setDisplayCards}
+              isSearching={isSearching}
+              hasSearched={hasSearched}
             />
           </Route>
         </Switch>

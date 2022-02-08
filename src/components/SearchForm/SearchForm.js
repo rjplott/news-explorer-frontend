@@ -1,12 +1,16 @@
 import './SearchForm.css';
 import Header from '../Header/Header';
+import { useState } from 'react';
 
 export default function SearchForm({
   isLoggedIn,
   onSignInClick,
   handleLogout,
   name,
+  handleRequestNews,
 }) {
+  const [searchValue, setSearchValue] = useState('');
+
   return (
     <div className="news-search">
       <Header
@@ -15,7 +19,14 @@ export default function SearchForm({
         handleLogout={handleLogout}
         name={name}
       />
-      <form className="seach-form">
+      <form
+        className="seach-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleRequestNews(searchValue);
+          setSearchValue('');
+        }}
+      >
         <h2 className="search-form__title">What's going on in the world?</h2>
         <p className="search-form__subtitle">
           Find the latest news on any topic and save them to your personal
@@ -30,7 +41,11 @@ export default function SearchForm({
             className="search-form__text-input"
             placeholder="Nature"
             minLength="2"
-            maxLength="20"
+            maxLength="30"
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
           />
           <button
             type="submit"

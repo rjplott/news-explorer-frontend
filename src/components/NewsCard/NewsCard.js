@@ -60,11 +60,11 @@ export default function NewsCard({ isLoggedIn, card }) {
         >
           {isHovering ? hoverBookermark : bookmark}
         </button>
-        <img className="news-card__image" src={card.image} alt="" />
-        <p className="news-card__date">{card.date}</p>
+        <img className="news-card__image" src={card.urlToImage} alt="" />
+        <p className="news-card__date">{card.publishedAt}</p>
         <h2 className="news-card__title">{card.title}</h2>
         <p className="news-card__content">{card.content}</p>
-        <p className="news-card__source">{card.source}</p>
+        <p className="news-card__source">{card.source.name}</p>
       </article>
     );
   }

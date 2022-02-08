@@ -2,16 +2,18 @@ import NewsCard from '../NewsCard/NewsCard';
 import React from 'react';
 import './NewsCardList.css';
 
-export default function NewsCardList({ cards, isLoggedIn }) {
-  const [numCards, setNumCards] = React.useState(3);
-  const [displayCards, setDisplayCard] = React.useState(
-    cards.slice(0, numCards)
-  );
-
+export default function NewsCardList({
+  cards,
+  isLoggedIn,
+  numCards,
+  setNumCards,
+  setDisplayCards,
+  displayCards,
+}) {
   const handleShowMoreClick = () => {
     if (numCards > cards.length) return;
     setNumCards(numCards + 3);
-    setDisplayCard(cards.slice(0, numCards + 3));
+    setDisplayCards(cards.slice(0, numCards + 3));
   };
 
   return (

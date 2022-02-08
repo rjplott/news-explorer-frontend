@@ -15,6 +15,13 @@ export default function Main({
   handleLogin,
   handleRegister,
   name,
+  handleRequestNews,
+  numCards,
+  displayCards,
+  setNumCards,
+  setDisplayCards,
+  isSearching,
+  hasSearched,
 }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -54,11 +61,25 @@ export default function Main({
         onSignInClick={handleOpenLogin}
         handleLogout={handleLogout}
         name={name}
+        handleRequestNews={handleRequestNews}
       />
       <main className="main">
-        <NewsCardList cards={cards} isLoggedIn={isLoggedIn} />
-        <Preloader />
-        <NoResults />
+        {!hasSearched ? (
+          <></>
+        ) : isSearching ? (
+          <Preloader />
+        ) : cards.length < 1 ? (
+          <NoResults />
+        ) : (
+          <NewsCardList
+            cards={cards}
+            isLoggedIn={isLoggedIn}
+            numCards={numCards}
+            displayCards={displayCards}
+            setNumCards={setNumCards}
+            setDisplayCards={setDisplayCards}
+          />
+        )}
         <About />
       </main>
       <Footer />

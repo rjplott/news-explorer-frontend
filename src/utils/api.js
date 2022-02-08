@@ -1,86 +1,26 @@
-class Api {
-  constructor(options) {
-    this._baseURL = options.baseURL;
-    this._headers = options.headers;
-    this._toDate = new Date().toISOString();
-    this._fromDate = new Date(
-      new Date().getTime() - 7 * 24 * 60 * 60 * 1000
-    ).toISOString();
-  }
+const checkResponse = (res) => {
+  return res.ok
+    ? res.json()
+    : Promise.reject(`Error: ${res.status} - ${res.statusText}`);
+};
 
-  _checkResponse(res) {
-    return res.ok
-      ? res.json()
-      : Promise.reject(`Error: ${res.status} - ${res.statusText}`);
-  }
+const fetchNews = (searchString) => {
+  const toDate = new Date().toISOString();
+  const fromDate = new Date(
+    new Date().getTime() - 7 * 24 * 60 * 60 * 1000
+  ).toISOString();
+  const apiKey = '444eb4b36be849fabd97c1d959391725';
 
-  getUserInformation(token) {
-    return fetch(`${this._baseURL}/users/me`, {
-      headers: { ...this._headers, authorization: `Bearer ${token}` },
-    }).then(this._checkResponse);
-  }
+  const url = `https://newsapi.org/v2/everything?q=${searchString}&from=${fromDate}&to=${toDate}&pageSize=100`;
 
-  getInitialCards(token) {
-    return fetch(`${this._baseURL}/cards`, {
-      headers: { ...this._headers, authorization: `Bearer ${token}` },
-    }).then(this._checkResponse);
-  }
+  const init = {
+    method: 'GET',
+    headers: {
+      'X-Api-Key': apiKey,
+    },
+  };
 
-  updateUserInformation(userInfo, token) {
-    return fetch(`${this._baseURL}/users/me`, {
-      method: 'PATCH',
-      headers: { ...this._headers, authorization: `Bearer ${token}` },
-      body: JSON.stringify(userInfo),
-    }).then(this._checkResponse);
-  }
+  return fetch(url, init).then(checkResponse);
+};
 
-  addCard(cardData, token) {
-    return fetch(`${this._baseURL}/cards`, {
-      method: 'POST',
-      headers: { ...this._headers, authorization: `Bearer ${token}` },
-      body: JSON.stringify(cardData),
-    }).then(this._checkResponse);
-  }
-
-  deleteCard(id, token) {
-    return fetch(`${this._baseURL}/cards/${id}`, {
-      method: 'DELETE',
-      headers: { ...this._headers, authorization: `Bearer ${token}` },
-    }).then(this._checkResponse);
-  }
-
-  _addLike(id, token) {
-    return fetch(`${this._baseURL}/cards/${id}/likes`, {
-      method: 'PUT',
-      headers: { ...this._headers, authorization: `Bearer ${token}` },
-    }).then(this._checkResponse);
-  }
-
-  _removeLike(id, token) {
-    return fetch(`${this._baseURL}/cards/${id}/likes`, {
-      method: 'DELETE',
-      headers: { ...this._headers, authorization: `Bearer ${token}` },
-    }).then(this._checkResponse);
-  }
-
-  changeLikeCardStatus(id, isLiked, token) {
-    return !isLiked ? this._addLike(id, token) : this._removeLike(id, token);
-  }
-
-  updateUserAvartar(userAvatar, token) {
-    return fetch(`${this._baseURL}/users/me/avatar`, {
-      method: 'PATCH',
-      headers: { ...this._headers, authorization: `Bearer ${token}` },
-      body: JSON.stringify(userAvatar),
-    }).then(this._checkResponse);
-  }
-}
-
-const api = new Api({
-  baseURL: 'https://api.around-jl.students.nomoreparties.site',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-export default api;
+export default fetchNews;
