@@ -10,6 +10,7 @@ export default function SearchForm({
   handleRequestNews,
 }) {
   const [searchValue, setSearchValue] = useState('');
+  const [canSearch, setCanSearch] = useState(false);
 
   return (
     <div className="news-search">
@@ -45,12 +46,16 @@ export default function SearchForm({
             value={searchValue}
             onChange={(e) => {
               setSearchValue(e.target.value);
+              setCanSearch(e.target.validity.valid);
+              console.log(e.target.validity);
             }}
           />
           <button
             type="submit"
             aria-label="Submit Form"
-            className="search-form__submit-button"
+            className={`search-form__submit-button ${
+              canSearch ? '' : 'search-form__submit-button_disabled'
+            }`}
           >
             Search
           </button>

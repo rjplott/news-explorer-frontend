@@ -2,8 +2,8 @@ import './App.css';
 import Main from '../Main/Main';
 import SavedNews from '../SavedNews/SavedNews';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
-import { useState } from 'react';
-import fetchNews from '../../utils/api';
+import { useState, useEffect } from 'react';
+import fetchNews from '../../utils/NewsSearchApi';
 
 function App() {
   const [newsCards, setNewsCards] = useState([]);
@@ -13,22 +13,30 @@ function App() {
   );
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [apiError, setApiError] = useState(false);
 
   const handleRequestNews = (search) => {
     setIsSearching(true);
     setHasSearched(true);
     setNumCards(3);
+    setApiError(false);
 
     fetchNews(search)
       .then((data) => {
         setNewsCards(() => data.articles);
+        localStorage.setItem('cards', JSON.stringify(data.articles));
         setDisplayCards(() => data.articles.slice(0, 3));
         setIsSearching(() => false);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        setApiError(true);
+        setIsSearching(() => false);
+        setNewsCards(() => []);
+        setDisplayCards(() => []);
+      });
   };
 
-  const cards = [
+  const savedCards = [
     {
       date: 'January 2nd, 2020',
       title: 'Test Card 1',
@@ -84,6 +92,16 @@ function App() {
     setIsLoggedIn(true);
   };
 
+  useEffect(() => {
+    const storedCards = JSON.parse(localStorage.getItem('cards'));
+
+    if (storedCards) {
+      setNewsCards(() => storedCards);
+      setDisplayCards(() => storedCards.slice(0, 3));
+      setHasSearched(() => true);
+    }
+  }, []);
+
   return (
     <div className="app">
       <BrowserRouter>
@@ -103,6 +121,7 @@ function App() {
               setDisplayCards={setDisplayCards}
               isSearching={isSearching}
               hasSearched={hasSearched}
+              apiError={apiError}
             />
           </Route>
         </Switch>
@@ -110,7 +129,7 @@ function App() {
           <Route path="/saved-news">
             <SavedNews
               isLoggedIn={isLoggedIn}
-              savedCards={cards}
+              savedCards={savedCards}
               handleLogout={handleLogout}
               name={username}
             />

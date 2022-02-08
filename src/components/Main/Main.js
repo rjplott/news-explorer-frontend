@@ -22,6 +22,7 @@ export default function Main({
   setDisplayCards,
   isSearching,
   hasSearched,
+  apiError,
 }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -39,6 +40,28 @@ export default function Main({
   const handleClosePopups = () => {
     setIsLoginOpen(false);
     setIsRegisterOpen(false);
+  };
+
+  const renderResults = () => {
+    if (!hasSearched) {
+      return;
+    } else if (isSearching) {
+      return <Preloader />;
+    } else if (apiError || cards.length > 1) {
+      return (
+        <NewsCardList
+          cards={cards}
+          isLoggedIn={isLoggedIn}
+          numCards={numCards}
+          displayCards={displayCards}
+          setNumCards={setNumCards}
+          setDisplayCards={setDisplayCards}
+          apiError={apiError}
+        />
+      );
+    } else {
+      return <NoResults />;
+    }
   };
 
   return (
@@ -63,22 +86,7 @@ export default function Main({
         handleRequestNews={handleRequestNews}
       />
       <main className="main">
-        {!hasSearched ? (
-          <></>
-        ) : isSearching ? (
-          <Preloader />
-        ) : cards.length < 1 ? (
-          <NoResults />
-        ) : (
-          <NewsCardList
-            cards={cards}
-            isLoggedIn={isLoggedIn}
-            numCards={numCards}
-            displayCards={displayCards}
-            setNumCards={setNumCards}
-            setDisplayCards={setDisplayCards}
-          />
-        )}
+        {renderResults()}
         <About />
       </main>
       <Footer />

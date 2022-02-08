@@ -68,3 +68,14 @@
 .search-form__submit-button:active {
   background-color: #2a65cc;
 }
+
+.search-form__submit-button_disabled {
+  background: #e6e8eb;
+  color: #b6bcbf;
+  cursor: not-allowed;
+}
+
+.search-form__submit-button_disabled:hover {
+  background: #e6e8eb;
+  color: #b6bcbf;
+}

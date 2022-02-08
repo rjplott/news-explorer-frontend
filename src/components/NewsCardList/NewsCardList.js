@@ -9,6 +9,7 @@ export default function NewsCardList({
   setNumCards,
   setDisplayCards,
   displayCards,
+  apiError,
 }) {
   const handleShowMoreClick = () => {
     if (numCards > cards.length) return;
@@ -20,9 +21,16 @@ export default function NewsCardList({
     <section className="news-card-list">
       <h2 className="news-card-list__title">Search results</h2>
       <div className="news-card-list__card-wrapper">
-        {displayCards.map((card, index) => (
-          <NewsCard key={index} card={card} isLoggedIn={isLoggedIn} />
-        ))}
+        {apiError ? (
+          <p className="news-card-list__api-error">
+            Sorry, something went wrong during the request. There may be a
+            connection issue or the server may be down. Please try again later.
+          </p>
+        ) : (
+          displayCards.map((card, index) => (
+            <NewsCard key={index} card={card} isLoggedIn={isLoggedIn} />
+          ))
+        )}
       </div>
       <button
         type="button"
