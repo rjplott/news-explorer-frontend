@@ -34,7 +34,6 @@ export default function Main({
   const handleOpenRegister = () => {
     setIsLoginOpen(false);
     setIsRegisterOpen(true);
-    console.log(isRegisterOpen);
   };
 
   const handleClosePopups = () => {

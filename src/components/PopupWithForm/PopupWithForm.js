@@ -39,9 +39,8 @@ const PopupWithForm = ({
   return (
     <div
       className={`popup popup_purpose_${name} ${isOpen ? 'popup_opened' : ''}`}
-      ref={ref}
     >
-      <div className="popup__wrapper">
+      <div className="popup__wrapper" ref={ref}>
         <button
           aria-label="Close Form"
           type="button"
