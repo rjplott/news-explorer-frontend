@@ -5,6 +5,7 @@ import { useState } from 'react';
 export default function NewsCard({ isLoggedIn, card }) {
   const path = useHistory().location.pathname;
   const [isHovering, setIsHovering] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   const bookmark = (
     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,14 +36,41 @@ export default function NewsCard({ isLoggedIn, card }) {
     </svg>
   );
 
+  const trashIcon = (
+    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M15 3H9v2H3v2h18V5h-6V3ZM5 9v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9h-2v11H7V9H5Zm4 0v9h2V9H9Zm4 0v9h2V9h-2Z"
+        fill="#B6BCBF"
+      />
+    </svg>
+  );
+
+  const hoverTrashIcon = (
+    <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M15 3H9v2H3v2h18V5h-6V3ZM5 9v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9h-2v11H7V9H5Zm4 0v9h2V9H9Zm4 0v9h2V9h-2Z"
+        fill="#1A1B22"
+      />
+    </svg>
+  );
   const handleHover = () => {
     setIsHovering((currentState) => !currentState);
+  };
+
+  const handleSaveClick = () => {
+    if (isLoggedIn) {
+      setIsBookmarked(!isBookmarked);
+    }
   };
 
   if (path === '/') {
     return (
       <article className="news-card">
-        {!isLoggedIn && (
+        {!isLoggedIn ? (
           <div
             className={`news-card__tooltip ${
               isHovering && 'news-card__tooltip_visible'
@@ -50,6 +78,16 @@ export default function NewsCard({ isLoggedIn, card }) {
           >
             Sign in to save articles
           </div>
+        ) : isBookmarked ? (
+          <div
+            className={`news-card__tooltip ${
+              isHovering && 'news-card__tooltip_visible'
+            }`}
+          >
+            Remove from saved
+          </div>
+        ) : (
+          ''
         )}
         <button
           className="news-card__save-button news-card__button"
@@ -57,8 +95,13 @@ export default function NewsCard({ isLoggedIn, card }) {
           aria-label="Save Article"
           onMouseEnter={handleHover}
           onMouseLeave={handleHover}
+          onClick={handleSaveClick}
         >
-          {isHovering ? hoverBookermark : bookmark}
+          {isBookmarked
+            ? savedBookmark
+            : isHovering
+            ? hoverBookermark
+            : bookmark}
         </button>
         <img className="news-card__image" src={card.urlToImage} alt="" />
         <p className="news-card__date">{card.publishedAt}</p>
@@ -86,7 +129,7 @@ export default function NewsCard({ isLoggedIn, card }) {
         onMouseEnter={handleHover}
         onMouseLeave={handleHover}
       >
-        {isHovering ? hoverBookermark : savedBookmark}
+        {isHovering ? hoverTrashIcon : trashIcon}
       </button>
       <img className="news-card__image" src={card.image} alt="" />
       <p className="news-card__date">{card.date}</p>

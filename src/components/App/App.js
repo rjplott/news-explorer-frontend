@@ -11,6 +11,7 @@ function App() {
   const [displayCards, setDisplayCards] = useState(
     newsCards.slice(0, numCards)
   );
+
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [apiError, setApiError] = useState(false);
@@ -132,6 +133,7 @@ function App() {
               savedCards={savedCards}
               handleLogout={handleLogout}
               name={username}
+              displayCards={savedCards}
             />
           </Route>
         </Switch>

@@ -47,7 +47,6 @@ export default function SearchForm({
             onChange={(e) => {
               setSearchValue(e.target.value);
               setCanSearch(e.target.validity.valid);
-              console.log(e.target.validity);
             }}
           />
           <button
