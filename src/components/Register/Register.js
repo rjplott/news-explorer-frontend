@@ -54,7 +54,7 @@ const Register = ({
   return (
     <PopupWithForm
       name="register"
-      title="Register"
+      title="Sign up"
       isOpen={isOpen}
       onClose={handleClosePopup}
       buttonText="Sign up"

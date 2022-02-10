@@ -1,6 +1,7 @@
 import NewsCard from '../NewsCard/NewsCard';
 import React from 'react';
 import './NewsCardList.css';
+import { useHistory } from 'react-router-dom';
 
 export default function NewsCardList({
   cards,
@@ -17,10 +18,22 @@ export default function NewsCardList({
     setDisplayCards(cards.slice(0, numCards + 3));
   };
 
+  const path = useHistory().location.pathname;
+
   return (
     <section className="news-card-list">
-      <h2 className="news-card-list__title">Search results</h2>
-      <div className="news-card-list__card-wrapper">
+      {path !== '/saved-news' ? (
+        <h2 className="news-card-list__title">Search results</h2>
+      ) : (
+        ''
+      )}
+      <div
+        className={`news-card-list__card-wrapper ${
+          path === '/saved-news'
+            ? 'news-card-list__card-wrapper_saved-view'
+            : ''
+        }`}
+      >
         {apiError ? (
           <p className="news-card-list__api-error">
             Sorry, something went wrong during the request. There may be a

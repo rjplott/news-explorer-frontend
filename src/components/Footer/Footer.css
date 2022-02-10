@@ -32,3 +32,17 @@
   text-align: center;
   color: #1a1b22;
 }
+
+@media screen and (max-width: 950px) {
+  .footer__inner-wrapper {
+    width: calc(100% - 80px);
+  }
+
+  .footer__copyright {
+    text-align: left;
+  }
+
+  .footer__navigation-list {
+    padding: 0;
+  }
+}

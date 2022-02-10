@@ -1,7 +1,7 @@
 .about {
   display: flex;
   justify-content: center;
-  padding: 80px 0px;
+  padding: 80px 104px;
 }
 
 .about__image {
@@ -32,4 +32,30 @@
   font-size: 18px;
   line-height: 24px;
   color: #1a1b22;
+}
+
+@media screen and (max-width: 1100px) {
+  .about {
+    align-items: center;
+  }
+
+  .about__image {
+    width: 30.5%;
+    height: 30.5%;
+  }
+
+  .about__text-wrapper {
+    padding-right: 0;
+  }
+
+  .about__title {
+    font-size: 30px;
+    line-height: 40px;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  .about {
+    padding: 40px;
+  }
 }

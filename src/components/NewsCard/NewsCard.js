@@ -7,6 +7,12 @@ export default function NewsCard({ isLoggedIn, card }) {
   const [isHovering, setIsHovering] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
+  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const convertedDate = new Date(card.publishedAt).toLocaleString(
+    'en-US',
+    dateOptions
+  );
+
   const bookmark = (
     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
@@ -104,7 +110,7 @@ export default function NewsCard({ isLoggedIn, card }) {
             : bookmark}
         </button>
         <img className="news-card__image" src={card.urlToImage} alt="" />
-        <p className="news-card__date">{card.publishedAt}</p>
+        <p className="news-card__date">{convertedDate}</p>
         <h2 className="news-card__title">{card.title}</h2>
         <p className="news-card__content">{card.content}</p>
         <p className="news-card__source">{card.source.name}</p>
@@ -132,7 +138,7 @@ export default function NewsCard({ isLoggedIn, card }) {
         {isHovering ? hoverTrashIcon : trashIcon}
       </button>
       <img className="news-card__image" src={card.image} alt="" />
-      <p className="news-card__date">{card.date}</p>
+      <p className="news-card__date">{convertedDate}</p>
       <h2 className="news-card__title">{card.title}</h2>
       <p className="news-card__content">{card.content}</p>
       <p className="news-card__source">{card.source}</p>

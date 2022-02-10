@@ -30,7 +30,7 @@ const Login = ({ isOpen, handleClosePopup, handleLinkClick, handleLogin }) => {
   return (
     <PopupWithForm
       name="login"
-      title="Login"
+      title="Sign in"
       isOpen={isOpen}
       onClose={handleClosePopup}
       buttonText="Sign in"

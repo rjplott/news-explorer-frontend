@@ -40,3 +40,24 @@
 .saved-news-header__keywords-listed {
   font-weight: 700;
 }
+
+@media screen and (max-width: 950px) {
+  .saved-news-header__text-wrapper {
+    margin: 24px 0 0 40px;
+  }
+
+  .saved-news-header__intro {
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .saved-news-header__title {
+    margin-top: 16px;
+    font-size: 30px;
+    line-height: 34px;
+  }
+
+  .saved-news-header__keywords {
+    margin: 16px 0 32px 0;
+  }
+}

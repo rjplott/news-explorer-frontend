@@ -39,7 +39,7 @@ function App() {
 
   const savedCards = [
     {
-      date: 'January 2nd, 2020',
+      publishedAt: '2022-02-09T23:59:05.663Z',
       title: 'Test Card 1',
       source: 'Joe.com',
       tag: 'Dummy card',
@@ -49,7 +49,7 @@ function App() {
         'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
     },
     {
-      date: 'January 2nd, 2020',
+      publishedAt: '2022-02-09T23:59:05.663Z',
       title: 'Test Card 2',
       source: 'Joe.com',
       tag: 'Dummy card',
@@ -59,7 +59,7 @@ function App() {
         'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
     },
     {
-      date: 'January 2nd, 2020',
+      publishedAt: '2022-02-09T23:59:05.663Z',
       title: 'Test Card 3',
       source: 'Joe.com',
       tag: 'Dummy card',
@@ -69,7 +69,7 @@ function App() {
         'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
     },
     {
-      date: 'January 2nd, 2020',
+      publishedAt: '2022-02-09T23:59:05.663Z',
       title: 'Test Card 4',
       source: 'Joe.com',
       tag: 'Dummy card',

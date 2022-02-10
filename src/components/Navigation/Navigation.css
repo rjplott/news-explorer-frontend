@@ -77,3 +77,19 @@
 .navigation__link_current_light-theme {
   border-bottom: 3px solid #1a1b22;
 }
+
+@media screen and (max-width: 950px) {
+  .navigation__link_type_home-logged-out {
+    margin-right: 16px;
+  }
+
+  .navigation__link_type_home-logged-in,
+  .navigation__link_type_saved {
+    margin-right: 16px;
+  }
+
+  .navigation__link_type_saved {
+    width: 160px;
+    text-align: center;
+  }
+}

@@ -3,3 +3,9 @@
   max-width: 1600px;
   margin: 0 auto;
 }
+
+@media screen and (max-width: 1600px) {
+  .app {
+    width: 100%;
+  }
+}
