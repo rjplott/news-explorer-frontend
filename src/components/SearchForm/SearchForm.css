@@ -124,3 +124,33 @@
     margin-top: 16px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .search-form__title,
+  .search-form__subtitle,
+  .search-form__search-wrapper {
+    margin-left: 16px;
+    margin-right: 16px;
+    max-width: 100%;
+  }
+
+  .search-form__title {
+    margin-top: 30px;
+  }
+
+  .search-form__search-wrapper {
+    flex-direction: column;
+    background: none;
+    margin-top: 100px;
+  }
+
+  .search-form__text-input {
+    border-radius: 100px;
+    min-width: 100%;
+  }
+
+  .search-form__submit-button {
+    width: 100%;
+    margin-top: 16px;
+  }
+}

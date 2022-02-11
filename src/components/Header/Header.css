@@ -31,3 +31,26 @@
     margin: 0 40px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .header__wrapper {
+    padding: 0 16px;
+    margin: 0;
+  }
+
+  .header__wrapper_active {
+    flex-direction: column;
+    z-index: 1;
+    position: relative;
+    background: #1a1b22;
+    margin: 0;
+    top: 0;
+    left: 0;
+    align-items: flex-start;
+  }
+
+  .header__title {
+    position: relative;
+    z-index: 1;
+  }
+}

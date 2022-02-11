@@ -62,6 +62,17 @@
   margin-bottom: 13px;
 }
 
+.navigation__hamburger-icon {
+  background: none;
+  border: none;
+  display: none;
+}
+
+.navigation__wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .navigation__user-name {
   margin: 10px;
 }
@@ -91,5 +102,83 @@
   .navigation__link_type_saved {
     width: 160px;
     text-align: center;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .navigation {
+    display: none;
+  }
+
+  .navigation__link_light-theme {
+    color: #fff;
+    padding-left: 0;
+  }
+
+  .navigation__link_type_logout_light-theme {
+    border: 1px solid #fff;
+    text-align: center;
+  }
+
+  .navigation__hamburger-icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    align-self: center;
+    margin: 16px 0 16px auto;
+  }
+
+  .navigation__close-icon {
+    width: 24px;
+    height: 24px;
+    border: 0;
+    padding: 0;
+    background-size: 100% 100%;
+    cursor: pointer;
+    transform: rotate(45deg);
+    outline: none;
+    background: none;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .navigation__overlay_active {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #000;
+    opacity: 0.5;
+  }
+
+  .navigation_active {
+    display: block;
+    position: relative;
+    padding: 0;
+    text-align: left;
+  }
+
+  .navigation__link_current {
+    border: none;
+  }
+
+  .navigation__wrapper {
+    display: block;
+    width: 100%;
+  }
+
+  .navigation__link > .navigation__link_type_login,
+  .navigation__link_type_login {
+    width: 100%;
+  }
+
+  .navigation__user-name {
+    margin: 0 auto;
+  }
+
+  .navigation__link_type_saved {
+    text-align: left;
   }
 }

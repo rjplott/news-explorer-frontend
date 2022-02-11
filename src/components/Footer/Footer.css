@@ -33,6 +33,12 @@
   color: #1a1b22;
 }
 
+.footer__icon-wrapper {
+  display: flex;
+  width: 70px;
+  justify-content: space-between;
+}
+
 @media screen and (max-width: 950px) {
   .footer__inner-wrapper {
     width: calc(100% - 80px);
@@ -44,5 +50,34 @@
 
   .footer__navigation-list {
     padding: 0;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .footer__inner-wrapper {
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    padding: 20px 16px;
+    margin: 0;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .footer__list-item_site-yandex {
+    order: 5;
+    width: 100%;
+    text-align: left;
+  }
+
+  .footer__navigation-list {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .footer__list-item {
+    padding-bottom: 40px;
   }
 }

@@ -60,6 +60,24 @@
   }
 }
 
+@media screen and (max-width: 550px) {
+  .news-card-list {
+    padding: 32px 16px 0;
+  }
+
+  .news-card-list__card-wrapper {
+    grid-template-columns: 1fr;
+    grid-row-gap: 10px;
+    margin: 58px auto;
+  }
+
+  .news-card-list__button {
+    width: 100%;
+    min-width: 100%;
+    margin-bottom: 24px;
+  }
+}
+
 .news-card-list__card-wrapper_saved-view {
   margin-top: 0;
 }

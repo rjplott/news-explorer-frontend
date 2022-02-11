@@ -16,29 +16,31 @@ export default function Footer() {
                 Home
               </a>
             </li>
-            <li className="footer__list-item">
+            <li className="footer__list-item footer__list-item_site-yandex">
               <a href="https://practicum.yandex.com" className="footer__link">
                 Practicum by Yandex
               </a>
             </li>
-            <li className="footer__list-item">
-              <a href="https://www.github.com" className="footer__link">
-                <img
-                  className="footer__icon"
-                  src={github}
-                  alt="Github.com's logo"
-                />
-              </a>
-            </li>
-            <li className="footer__list-item">
-              <a href="https://www.facebook.com" className="footer__link">
-                <img
-                  className="footer__icon"
-                  src={facebook}
-                  alt="Facebook.com's logo"
-                />
-              </a>
-            </li>
+            <div className="footer__icon-wrapper">
+              <li className="footer__list-item">
+                <a href="https://www.github.com" className="footer__link">
+                  <img
+                    className="footer__icon"
+                    src={github}
+                    alt="Github.com's logo"
+                  />
+                </a>
+              </li>
+              <li className="footer__list-item">
+                <a href="https://www.facebook.com" className="footer__link">
+                  <img
+                    className="footer__icon"
+                    src={facebook}
+                    alt="Facebook.com's logo"
+                  />
+                </a>
+              </li>
+            </div>
           </ul>
         </nav>
       </div>

@@ -174,3 +174,22 @@
     height: 150px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .news-card {
+    margin: auto;
+  }
+
+  .news-card__source {
+    margin-top: 29px;
+  }
+
+  .news-card__content {
+    max-height: 66px;
+    margin-top: 14px;
+  }
+
+  .news-card__image {
+    height: 196px;
+  }
+}
