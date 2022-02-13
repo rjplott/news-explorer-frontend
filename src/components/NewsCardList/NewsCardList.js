@@ -4,19 +4,21 @@ import './NewsCardList.css';
 import { useHistory } from 'react-router-dom';
 
 export default function NewsCardList({
-  cards,
+  articles,
+  setArticles,
   isLoggedIn,
-  numCards,
-  setNumCards,
-  setDisplayCards,
-  displayCards,
-  apiError,
+  searchStatus
 }) {
   const handleShowMoreClick = () => {
-    if (numCards > cards.length) return;
-    setNumCards(numCards + 3);
-    setDisplayCards(cards.slice(0, numCards + 3));
+    if (articles.numCards > articles.cards.length) return;
+    setArticles({
+      ...articles,
+      numCards: articles.numCards + 3,
+      displayedCards: articles.cards.slice(0, articles.numCards + 3)
+    });
   };
+
+  const { displayedCards } = articles;
 
   const path = useHistory().location.pathname;
 
@@ -34,25 +36,25 @@ export default function NewsCardList({
             : ''
         }`}
       >
-        {apiError ? (
+        {searchStatus === 'error' ? (
           <p className="news-card-list__api-error">
             Sorry, something went wrong during the request. There may be a
             connection issue or the server may be down. Please try again later.
           </p>
         ) : (
-          displayCards.map((card, index) => (
+          displayedCards.map((card, index) => (
             <NewsCard key={index} card={card} isLoggedIn={isLoggedIn} />
           ))
         )}
       </div>
-      <button
+      {path === '/' ? (<button
         type="button"
         aria-label="Show more articles"
         className="news-card-list__button"
         onClick={handleShowMoreClick}
       >
         Show more
-      </button>
+      </button>) : (<></>)}
     </section>
   );
 }

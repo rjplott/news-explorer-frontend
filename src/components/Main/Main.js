@@ -9,20 +9,15 @@ import Login from '../Login/Login';
 import { useState } from 'react';
 
 export default function Main({
-  cards,
+  articles,
+  setArticles,
   isLoggedIn,
   handleLogout,
   handleLogin,
   handleRegister,
   name,
   handleRequestNews,
-  numCards,
-  displayCards,
-  setNumCards,
-  setDisplayCards,
-  isSearching,
-  hasSearched,
-  apiError,
+  searchStatus
 }) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -43,20 +38,17 @@ export default function Main({
   };
 
   const renderResults = () => {
-    if (!hasSearched) {
+    if (searchStatus === 'not searched') {
       return;
-    } else if (isSearching) {
+    } else if (searchStatus === 'is searching') {
       return <Preloader />;
-    } else if (apiError || cards.length > 1) {
+    } else if (searchStatus === 'results' || searchStatus === 'error') {
       return (
         <NewsCardList
-          cards={cards}
+          articles={articles}
+          setArticles={setArticles}
           isLoggedIn={isLoggedIn}
-          numCards={numCards}
-          displayCards={displayCards}
-          setNumCards={setNumCards}
-          setDisplayCards={setDisplayCards}
-          apiError={apiError}
+          searchStatus={searchStatus}
         />
       );
     } else {

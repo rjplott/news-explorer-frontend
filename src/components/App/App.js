@@ -4,81 +4,20 @@ import SavedNews from '../SavedNews/SavedNews';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
+import SAVED_CARDS from '../../utils/constants';
 
 function App() {
-  const [newsCards, setNewsCards] = useState([]);
-  const [numCards, setNumCards] = useState(3);
-  const [displayCards, setDisplayCards] = useState(
-    newsCards.slice(0, numCards)
-  );
+  const [articles, setArticles] = useState({
+    cards: [],
+    numDiplayed: 0,
+    displayedCards: []
+  });
 
-  const [isSearching, setIsSearching] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
-  const [apiError, setApiError] = useState(false);
+  const [searchInfo, setSearchInfo] = useState({ status: 'not searched', term: '' });
 
   const handleRequestNews = (search) => {
-    setIsSearching(true);
-    setHasSearched(true);
-    setNumCards(3);
-    setApiError(false);
-
-    fetchNews(search)
-      .then((data) => {
-        setNewsCards(() => data.articles);
-        localStorage.setItem('cards', JSON.stringify(data.articles));
-        setDisplayCards(() => data.articles.slice(0, 3));
-        setIsSearching(() => false);
-      })
-      .catch(() => {
-        setApiError(true);
-        setIsSearching(() => false);
-        setNewsCards(() => []);
-        setDisplayCards(() => []);
-      });
+    setSearchInfo({ status: 'is searching', term: search });
   };
-
-  const savedCards = [
-    {
-      publishedAt: '2022-02-09T23:59:05.663Z',
-      title: 'Test Card 1',
-      source: 'Joe.com',
-      tag: 'Dummy card',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis sagittis mollis. Nulla condimentum elit sapien, eget iaculis odio mattis sit amet. Curabitur eu tellus libero. Aliquam bibendum leo quis tellus auctor ullamcorper. Phasellus iaculis maximus ipsum nec mattis. Sed nisl enim, fermentum sit amet vulputate id, mattis ac tortor.',
-      image:
-        'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
-    },
-    {
-      publishedAt: '2022-02-09T23:59:05.663Z',
-      title: 'Test Card 2',
-      source: 'Joe.com',
-      tag: 'Dummy card',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis sagittis mollis. Nulla condimentum elit sapien, eget iaculis odio mattis sit amet. Curabitur eu tellus libero. Aliquam bibendum leo quis tellus auctor ullamcorper. Phasellus iaculis maximus ipsum nec mattis. Sed nisl enim, fermentum sit amet vulputate id, mattis ac tortor.',
-      image:
-        'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
-    },
-    {
-      publishedAt: '2022-02-09T23:59:05.663Z',
-      title: 'Test Card 3',
-      source: 'Joe.com',
-      tag: 'Dummy card',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis sagittis mollis. Nulla condimentum elit sapien, eget iaculis odio mattis sit amet. Curabitur eu tellus libero. Aliquam bibendum leo quis tellus auctor ullamcorper. Phasellus iaculis maximus ipsum nec mattis. Sed nisl enim, fermentum sit amet vulputate id, mattis ac tortor.',
-      image:
-        'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
-    },
-    {
-      publishedAt: '2022-02-09T23:59:05.663Z',
-      title: 'Test Card 4',
-      source: 'Joe.com',
-      tag: 'Dummy card',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec facilisis sagittis mollis. Nulla condimentum elit sapien, eget iaculis odio mattis sit amet. Curabitur eu tellus libero. Aliquam bibendum leo quis tellus auctor ullamcorper. Phasellus iaculis maximus ipsum nec mattis. Sed nisl enim, fermentum sit amet vulputate id, mattis ac tortor.',
-      image:
-        'https://earthsky.org/upl/2012/09/moon_8-31-2012_Priya_Kumar_Muscat_Masqat_Oman.jpeg',
-    },
-  ];
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
@@ -94,12 +33,57 @@ function App() {
   };
 
   useEffect(() => {
+    if (searchInfo.term) {
+      fetchNews(searchInfo.term)
+        .then((data) => {
+
+          setArticles({
+            cards: data.articles,
+            numCards: 3,
+            displayedCards: data.articles.slice(0, 3)
+          })
+
+          if (data.articles.length > 0) {
+            setSearchInfo({
+              term: '',
+              status: 'results'
+            });
+          } else {
+            setSearchInfo({
+              term: '',
+              status: 'no results'
+            });
+          }
+        })
+        .catch(() => {
+          setSearchInfo({
+            term: '',
+            status: 'error'
+          });
+          setArticles({
+            cards: [],
+            numCards: 0,
+            displayedCards: []
+          })
+        });
+    } 
+  }, [searchInfo])
+
+  useEffect(() => {
     const storedCards = JSON.parse(localStorage.getItem('cards'));
 
     if (storedCards) {
-      setNewsCards(() => storedCards);
-      setDisplayCards(() => storedCards.slice(0, 3));
-      setHasSearched(() => true);
+
+      setArticles({
+        cards: storedCards,
+        numCards: 3,
+        displayedCards: storedCards.slice(0, 3)
+      })
+
+      setSearchInfo({
+        term: '',
+        status: 'results'
+      })
     }
   }, []);
 
@@ -110,19 +94,14 @@ function App() {
           <Route exact path="/">
             <Main
               isLoggedIn={isLoggedIn}
-              cards={newsCards}
               handleLogin={handleLogin}
               handleLogout={handleLogout}
               handleRegister={handleRegister}
               name={username}
               handleRequestNews={handleRequestNews}
-              numCards={numCards}
-              displayCards={displayCards}
-              setNumCards={setNumCards}
-              setDisplayCards={setDisplayCards}
-              isSearching={isSearching}
-              hasSearched={hasSearched}
-              apiError={apiError}
+              searchStatus={searchInfo.status}
+              articles={articles}
+              setArticles={setArticles}
             />
           </Route>
         </Switch>
@@ -130,10 +109,9 @@ function App() {
           <Route path="/saved-news">
             <SavedNews
               isLoggedIn={isLoggedIn}
-              savedCards={savedCards}
               handleLogout={handleLogout}
               name={username}
-              displayCards={savedCards}
+              articles={SAVED_CARDS}
             />
           </Route>
         </Switch>
