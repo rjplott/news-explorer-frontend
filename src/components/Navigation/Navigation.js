@@ -33,8 +33,6 @@ export default function Navigation({
     </svg>
   );
 
-  console.log(path);
-
   if (isLoggedIn) {
     return (
       <div className="navigation__wrapper">
