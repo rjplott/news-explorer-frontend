@@ -5,7 +5,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
 import { SAVED_CARDS } from '../../utils/constants';
-import { registerUser } from '../../utils/MainApi';
+import { registerUser, loginUser } from '../../utils/MainApi';
 
 function App() {
   const [articles, setArticles] = useState({
@@ -23,7 +23,15 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = ({ email, password }) => {
+    
+    loginUser({ email, password })
+      .then(data => {
+        console.log(data);
+        localStorage.setItem('token', JSON.stringify(data.token));
+      })
+      .catch(err => console.log(err));
+
     setUsername('Placeholder');
     setIsLoggedIn(true);
   };

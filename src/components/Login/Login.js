@@ -36,7 +36,7 @@ const Login = ({ isOpen, handleClosePopup, handleLinkClick, handleLogin }) => {
       buttonText="Sign in"
       onSubmit={(e) => {
         e.preventDefault();
-        handleLogin();
+        handleLogin({email, password});
         handleClosePopup();
       }}
       linkText="Sign up"
