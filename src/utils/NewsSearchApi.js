@@ -1,9 +1,4 @@
-const checkResponse = (res) => {
-  console.log(res);
-  return res.ok
-    ? res.json()
-    : Promise.reject(`Error: ${res.status} - ${res.message}`);
-};
+import checkResponse from "./apiHelpers";
 
 const fetchNews = (searchString) => {
   const toDate = new Date().toISOString();
