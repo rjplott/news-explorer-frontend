@@ -4,7 +4,7 @@ import SavedNews from '../SavedNews/SavedNews';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
-import SAVED_CARDS from '../../utils/constants';
+import {SAVED_CARDS} from '../../utils/constants';
 
 function App() {
   const [articles, setArticles] = useState({

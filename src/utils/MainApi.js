@@ -1,0 +1,15 @@
+import checkResponse from './apiHelpers';
+import { BASE_URL } from './constants';
+
+export const registerUser = ({name, email, password}) => {
+  return fetch(`${BASE_URL}/signup`, {
+    'method': 'POST',
+    'headers': {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, email, password })
+  })
+    .then((res) => checkResponse(res))
+    .then((data) => data);
+}

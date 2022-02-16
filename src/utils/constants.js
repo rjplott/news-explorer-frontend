@@ -1,3 +1,5 @@
+const BASE_URL = 'api.news-explorer.jl.students.nomoreparties.sbs';
+
 const SAVED_CARDS = {
   displayedCards: [
     {
@@ -43,4 +45,4 @@ const SAVED_CARDS = {
   ],
 };
 
-export default SAVED_CARDS
+export { SAVED_CARDS, BASE_URL };
