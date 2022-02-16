@@ -1,4 +1,4 @@
-const BASE_URL = 'api.news-explorer.jl.students.nomoreparties.sbs';
+const BASE_URL = 'https://api.news-explorer.jl.students.nomoreparties.sbs';
 
 const SAVED_CARDS = {
   displayedCards: [

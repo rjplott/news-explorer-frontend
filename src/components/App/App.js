@@ -4,7 +4,8 @@ import SavedNews from '../SavedNews/SavedNews';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
-import {SAVED_CARDS} from '../../utils/constants';
+import { SAVED_CARDS } from '../../utils/constants';
+import { registerUser } from '../../utils/MainApi';
 
 function App() {
   const [articles, setArticles] = useState({
@@ -27,9 +28,15 @@ function App() {
     setIsLoggedIn(true);
   };
   const handleLogout = () => setIsLoggedIn(false);
-  const handleRegister = (name) => {
+  const handleRegister = ({ name, email, password }) => {
+    
+    registerUser({name, email, password})
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+
     setUsername(name);
     setIsLoggedIn(true);
+
   };
 
   useEffect(() => {

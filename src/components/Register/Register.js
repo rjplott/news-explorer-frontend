@@ -60,7 +60,7 @@ const Register = ({
       buttonText="Sign up"
       onSubmit={(e) => {
         e.preventDefault();
-        handleRegister(username);
+        handleRegister({'name': username, email, password});
         handleClosePopup();
       }}
       linkText="Sign in"
