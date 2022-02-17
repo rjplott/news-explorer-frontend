@@ -1,7 +1,7 @@
 import React from "react";
 
-export function useFormWithValidation() {
-  const [values, setValues] = React.useState({});
+export function useFormWithValidation(inputs) {
+  const [values, setValues] = React.useState(inputs || {});
   const [errors, setErrors] = React.useState({});
   const [isValid, setIsValid] = React.useState(false);
 
@@ -20,7 +20,7 @@ export function useFormWithValidation() {
       setErrors(newErrors);
       setIsValid(newIsValid);
     },
-    [setValues, setErrors, setIsValid]
+    [setValues, setErrors, setIsValid,]
   );
 
   return { values, handleChange, errors, isValid, resetForm };
