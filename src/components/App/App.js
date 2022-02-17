@@ -58,6 +58,8 @@ function App() {
             displayedCards: data.articles.slice(0, 3)
           })
 
+          localStorage.setItem('cards', JSON.stringify(data.articles));
+
           if (data.articles.length > 0) {
             setSearchInfo({
               term: '',
