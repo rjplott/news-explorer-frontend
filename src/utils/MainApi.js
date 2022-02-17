@@ -27,7 +27,7 @@ export const loginUser = ({ email, password }) => {
     .then(data => data);
 }
 
-export class UserAPIRequests {
+class UserAPIRequests {
     login({ email, password }) {
       return fetch(`${BASE_URL}/signin`, {
         method: 'POST',
@@ -58,10 +58,12 @@ export class UserAPIRequests {
       return fetch(`${BASE_URL}/users/me`, {
         method: 'GET',
         headers: {
-          Authorization: `Bearer: ${token}`
+          Authorization: `Bearer ${token}`
         }
       })
         .then((res) => checkResponse(res))
         .then((data) => data);
     }
 }
+
+export const user = new UserAPIRequests();

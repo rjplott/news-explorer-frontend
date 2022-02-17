@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import './Navigation.css';
 import logout from '../../images/logout.svg';
 import logoutLight from '../../images/logout-light.svg';
+import { useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function Navigation({
   isLoggedIn,
@@ -32,6 +34,8 @@ export default function Navigation({
       />
     </svg>
   );
+
+  const user = useContext(CurrentUserContext);
 
   if (isLoggedIn) {
     return (
@@ -96,7 +100,7 @@ export default function Navigation({
                   : ''
               }`}
             >
-              <span className="navigation__user-name">{name}</span>
+              <span className="navigation__user-name">{user.name}</span>
               <img
                 src={path === '/saved-news' ? logoutLight : logout}
                 alt="Logout icon"

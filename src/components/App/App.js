@@ -5,7 +5,8 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
 import { SAVED_CARDS } from '../../utils/constants';
-import { registerUser, loginUser } from '../../utils/MainApi';
+import { user } from '../../utils/MainApi';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
   const [articles, setArticles] = useState({
@@ -21,28 +22,27 @@ function App() {
   };
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [userInfo, setUserInfo] = useState({});
+  const [token, setToken] = useState('');
 
   const handleLogin = ({ email, password }) => {
     
-    loginUser({ email, password })
+    user.login({ email, password })
       .then(data => {
         console.log(data);
         localStorage.setItem('token', JSON.stringify(data.token));
       })
       .catch(err => console.log(err));
 
-    setUsername('Placeholder');
+    
     setIsLoggedIn(true);
   };
   const handleLogout = () => setIsLoggedIn(false);
   const handleRegister = ({ name, email, password }) => {
     
-    registerUser({name, email, password})
+    user.register({name, email, password})
       .then(data => console.log(data))
       .catch(err => console.log(err));
-
-    setUsername(name);
     setIsLoggedIn(true);
 
   };
@@ -90,7 +90,6 @@ function App() {
     const storedCards = JSON.parse(localStorage.getItem('cards'));
 
     if (storedCards) {
-
       setArticles({
         cards: storedCards,
         numCards: 3,
@@ -101,39 +100,50 @@ function App() {
         term: '',
         status: 'results'
       })
+
+      const existingToken = localStorage.getItem('token');
+
+      if (existingToken) {
+        setToken(existingToken);
+        user.getInformation(existingToken)
+          .then(info => {
+            setUserInfo(info.data);
+            setIsLoggedIn(true);
+          });
+      }
     }
   }, []);
 
   return (
-    <div className="app">
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            <Main
-              isLoggedIn={isLoggedIn}
-              handleLogin={handleLogin}
-              handleLogout={handleLogout}
-              handleRegister={handleRegister}
-              name={username}
-              handleRequestNews={handleRequestNews}
-              searchStatus={searchInfo.status}
-              articles={articles}
-              setArticles={setArticles}
-            />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/saved-news">
-            <SavedNews
-              isLoggedIn={isLoggedIn}
-              handleLogout={handleLogout}
-              name={username}
-              articles={SAVED_CARDS}
-            />
-          </Route>
-        </Switch>
-      </BrowserRouter>
-    </div>
+    <CurrentUserContext.Provider value={userInfo}>
+      <div className="app">
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/">
+              <Main
+                isLoggedIn={isLoggedIn}
+                handleLogin={handleLogin}
+                handleLogout={handleLogout}
+                handleRegister={handleRegister}
+                handleRequestNews={handleRequestNews}
+                searchStatus={searchInfo.status}
+                articles={articles}
+                setArticles={setArticles}
+              />
+            </Route>
+          </Switch>
+          <Switch>
+            <Route path="/saved-news">
+              <SavedNews
+                isLoggedIn={isLoggedIn}
+                handleLogout={handleLogout}
+                articles={SAVED_CARDS}
+              />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 
