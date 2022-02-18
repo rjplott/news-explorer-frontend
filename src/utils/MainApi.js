@@ -1,30 +1,46 @@
 import checkResponse from './apiHelpers';
 import { BASE_URL } from './constants';
 
-export const registerUser = ({name, email, password}) => {
-  return fetch(`${BASE_URL}/signup`, {
-    'method': 'POST',
-    'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ name, email, password })
-  })
-    .then((res) => checkResponse(res))
-    .then((data) => data);
-}
+class AritcleAPIRequests {
+  create({ token, article }) {
+    return fetch(`${BASE_URL}/articles/`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      },
+      body: JSON.stringify(article)
+    })
+      .then(res => checkResponse(res))
+      .then(data => data);
+  }
 
-export const loginUser = ({ email, password }) => {
-  return fetch(`${BASE_URL}/signin`, {
-    'method': 'POST',
-    'headers': {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email, password })
-  })
-    .then(res => checkResponse(res))
-    .then(data => data);
+  delete({ token, articleId }) {
+    return fetch(`${BASE_URL}/articles/${articleId}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => checkResponse(res))
+      .then((data) => data);
+  }
+
+  getSavedArticles({ token }) {
+    return fetch(`${BASE_URL}/articles`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => checkResponse(res))
+      .then((data) => data);
+  }
 }
 
 class UserAPIRequests {
@@ -66,4 +82,5 @@ class UserAPIRequests {
     }
 }
 
-export const user = new UserAPIRequests();
+export const userApi = new UserAPIRequests();
+export const articleApi = new AritcleAPIRequests();

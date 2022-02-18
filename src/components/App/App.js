@@ -5,7 +5,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
 import { SAVED_CARDS } from '../../utils/constants';
-import { user } from '../../utils/MainApi';
+import { userApi } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
@@ -57,7 +57,7 @@ function App() {
 
   const handleLogin = ({ email, password }) => {
     setServerError("");
-    user.login({ email, password })
+    userApi.login({ email, password })
       .then(data => {
         console.log(data);
         localStorage.setItem('token', data.token);
@@ -75,7 +75,7 @@ function App() {
 
   const handleRegister = ({ name, email, password }) => {
     setServerError("");
-    user.register({name, email, password})
+    userApi.register({name, email, password})
       .then(() => handleOpenConfirmation())
       .catch(() => setServerError('Registration was not successful, please try again.'));
   };
@@ -122,7 +122,7 @@ function App() {
   const validateToken = (token) => {
     if (token) {
       setToken(token);
-      user.getInformation(token).then((info) => {
+      userApi.getInformation(token).then((info) => {
         setUserInfo(info.data);
         setIsLoggedIn(true);
       })
