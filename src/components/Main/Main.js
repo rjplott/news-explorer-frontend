@@ -24,7 +24,8 @@ export default function Main({
   isConfirmationOpen,
   handleOpenLogin,
   handleOpenRegister,
-  handleClosePopups
+  handleClosePopups,
+  handleSaveCard,
 }) {
 
   const renderResults = () => {
@@ -39,6 +40,7 @@ export default function Main({
           setArticles={setArticles}
           isLoggedIn={isLoggedIn}
           searchStatus={searchStatus}
+          handleSaveCard={handleSaveCard}
         />
       );
     } else {

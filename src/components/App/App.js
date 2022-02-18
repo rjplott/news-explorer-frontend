@@ -5,7 +5,7 @@ import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
 import { SAVED_CARDS } from '../../utils/constants';
-import { userApi } from '../../utils/MainApi';
+import { userApi, articleApi } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function App() {
@@ -14,6 +14,8 @@ function App() {
     numDiplayed: 0,
     displayedCards: []
   });
+
+  const [savedArticles, setSavedArticles] = useState([]);
 
   const [searchInfo, setSearchInfo] = useState({ status: 'not searched', term: '' });
 
@@ -80,20 +82,42 @@ function App() {
       .catch(() => setServerError('Registration was not successful, please try again.'));
   };
 
+  const handleSaveCard = (article, setId) => {
+    console.log(article);
+    articleApi.create(article)
+      .then(data => {
+        console.log(data);
+        setId(data._id)
+        setSavedArticles([...savedArticles, data])
+      })
+      .catch(err => console.log(err));
+  }
+
   useEffect(() => {
     if (searchInfo.term) {
       fetchNews(searchInfo.term)
         .then((data) => {
-
-          setArticles({
-            cards: data.articles,
-            numCards: 3,
-            displayedCards: data.articles.slice(0, 3)
+          const cards = data.articles.map(article => {
+              return {
+                keyword: searchInfo.term,
+                title: article.title,
+                text: article.description,
+                date: article.publishedAt,
+                source: article.source.name,
+                link: article.url,
+                image: article.urlToImage,
+              };
           })
 
-          localStorage.setItem('cards', JSON.stringify(data.articles));
+          setArticles({
+            cards: cards,
+            numCards: 3,
+            displayedCards: cards.slice(0, 3)
+          })
 
-          if (data.articles.length > 0) {
+          localStorage.setItem('cards', JSON.stringify(cards));
+
+          if (cards.length > 0) {
             setSearchInfo({
               term: '',
               status: 'results'
@@ -122,6 +146,7 @@ function App() {
   const validateToken = (token) => {
     if (token) {
       setToken(token);
+      articleApi.setToken(token);
       userApi.getInformation(token).then((info) => {
         setUserInfo(info.data);
         setIsLoggedIn(true);
@@ -176,6 +201,8 @@ function App() {
                 handleOpenLogin={handleOpenLogin}
                 handleOpenRegister={handleOpenRegister}
                 handleClosePopups={handleClosePopups}
+                handleSaveCard={handleSaveCard}
+                token={token}
               />
             </Route>
           </Switch>

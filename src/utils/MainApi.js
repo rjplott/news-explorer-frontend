@@ -2,40 +2,45 @@ import checkResponse from './apiHelpers';
 import { BASE_URL } from './constants';
 
 class AritcleAPIRequests {
-  create({ token, article }) {
+
+  setToken(token) {
+    this.token = token;
+  }
+
+  create(article) {
     return fetch(`${BASE_URL}/articles/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${this.token}`
       },
-      body: JSON.stringify(article)
+      body: JSON.stringify(article),
     })
       .then(res => checkResponse(res))
       .then(data => data);
   }
 
-  delete({ token, articleId }) {
+  delete(articleId) {
     return fetch(`${BASE_URL}/articles/${articleId}`, {
       method: 'DELETE',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.token}`,
       },
     })
       .then((res) => checkResponse(res))
       .then((data) => data);
   }
 
-  getSavedArticles({ token }) {
+  getSavedArticles() {
     return fetch(`${BASE_URL}/articles`, {
       method: 'GET',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${this.token}`,
       },
     })
       .then((res) => checkResponse(res))
