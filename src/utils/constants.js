@@ -1,4 +1,5 @@
-const BASE_URL = 'https://api.news-explorer.jl.students.nomoreparties.sbs';
+// const BASE_URL = 'https://api.news-explorer.jl.students.nomoreparties.sbs';
+const BASE_URL = 'http://localhost:3000';
 
 const SAVED_CARDS = {
   displayedCards: [

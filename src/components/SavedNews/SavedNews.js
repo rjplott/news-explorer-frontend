@@ -7,12 +7,10 @@ const SavedNews = ({
   articles,
   isLoggedIn,
   handleLogout,
-  name,
 }) => {
   return (
     <div className="saved-news">
       <SavedNewsHeader
-        name={name}
         isLoggedIn={isLoggedIn}
         articles={articles}
         handleLogout={handleLogout}

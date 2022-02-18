@@ -5,8 +5,8 @@ import NewsCardList from '../NewsCardList/NewsCardList';
 import About from '../About/About';
 import Footer from '../Footer/Footer';
 import Register from '../Register/Register';
+import ConfirmationPopup from '../ConfirmationPopup/ConfirmationPopup';
 import Login from '../Login/Login';
-import { useState } from 'react';
 
 export default function Main({
   articles,
@@ -17,25 +17,15 @@ export default function Main({
   handleRegister,
   name,
   handleRequestNews,
-  searchStatus
+  searchStatus,
+  serverError,
+  isLoginOpen,
+  isRegisterOpen,
+  isConfirmationOpen,
+  handleOpenLogin,
+  handleOpenRegister,
+  handleClosePopups
 }) {
-  const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-
-  const handleOpenLogin = () => {
-    setIsRegisterOpen(false);
-    setIsLoginOpen(true);
-  };
-
-  const handleOpenRegister = () => {
-    setIsLoginOpen(false);
-    setIsRegisterOpen(true);
-  };
-
-  const handleClosePopups = () => {
-    setIsLoginOpen(false);
-    setIsRegisterOpen(false);
-  };
 
   const renderResults = () => {
     if (searchStatus === 'not searched') {
@@ -63,12 +53,19 @@ export default function Main({
         handleClosePopup={handleClosePopups}
         handleLinkClick={handleOpenLogin}
         handleRegister={handleRegister}
+        serverError={serverError}
+      />
+      <ConfirmationPopup 
+        isOpen={isConfirmationOpen}
+        onClose={handleClosePopups}
+        onLinkClick={handleOpenLogin}
       />
       <Login
         isOpen={isLoginOpen}
         handleClosePopup={handleClosePopups}
         handleLinkClick={handleOpenRegister}
         handleLogin={handleLogin}
+        serverError={serverError}
       />
       <SearchForm
         isLoggedIn={isLoggedIn}

@@ -6,6 +6,7 @@ const Register = ({
   handleClosePopup,
   handleLinkClick,
   handleRegister,
+  serverError
 }) => {
 
   const { values, handleChange, errors, isValid, resetForm } =
@@ -20,9 +21,12 @@ const Register = ({
       buttonText="Sign up"
       onSubmit={(e) => {
         e.preventDefault();
-        handleRegister({ 'name': values.username, 'email': values.email, 'password': values.password });
+        handleRegister({
+          name: values.username,
+          email: values.email,
+          password: values.password,
+        });
         resetForm({ username: '', email: '', password: '' });
-        handleClosePopup();
       }}
       linkText="Sign in"
       onLinkClick={handleLinkClick}
@@ -82,6 +86,7 @@ const Register = ({
       <span className="popup__error register-enter-username-error">
         {errors.username}
       </span>
+      <span className="popup__error">{serverError}</span>
     </PopupWithForm>
   );
 };

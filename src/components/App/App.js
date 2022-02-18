@@ -21,30 +21,63 @@ function App() {
     setSearchInfo({ status: 'is searching', term: search });
   };
 
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+
+  const handleOpenLogin = () => {
+    setIsRegisterOpen(false);
+    setIsLoginOpen(true);
+    setIsConfirmationOpen(false);
+  };
+
+  const handleOpenRegister = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(true);
+    setIsConfirmationOpen(false);
+  };
+
+  const handleOpenConfirmation = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(false);
+    setIsConfirmationOpen(true);
+  };
+
+  const handleClosePopups = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(false);
+    setIsConfirmationOpen(false);
+    setServerError('');
+  };
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({});
   const [token, setToken] = useState('');
+  const [serverError, setServerError] = useState('')
 
   const handleLogin = ({ email, password }) => {
-    
+    setServerError("");
     user.login({ email, password })
       .then(data => {
         console.log(data);
-        localStorage.setItem('token', JSON.stringify(data.token));
+        localStorage.setItem('token', data.token);
+        validateToken(data.token);
+        handleClosePopups();
       })
-      .catch(err => console.log(err));
-
-    
-    setIsLoggedIn(true);
+      .catch(() => setServerError('Email or password not recognized, please try again.'));
   };
-  const handleLogout = () => setIsLoggedIn(false);
-  const handleRegister = ({ name, email, password }) => {
-    
-    user.register({name, email, password})
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
-    setIsLoggedIn(true);
 
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    localStorage.removeItem('token');
+    setUserInfo({});
+  }
+
+  const handleRegister = ({ name, email, password }) => {
+    setServerError("");
+    user.register({name, email, password})
+      .then(() => handleOpenConfirmation())
+      .catch(() => setServerError('Registration was not successful, please try again.'));
   };
 
   useEffect(() => {
@@ -86,7 +119,18 @@ function App() {
     } 
   }, [searchInfo])
 
-  useEffect(() => {
+  const validateToken = (token) => {
+    if (token) {
+      setToken(token);
+      user.getInformation(token).then((info) => {
+        setUserInfo(info.data);
+        setIsLoggedIn(true);
+      })
+        .catch((err) => console.log(err));
+    }
+  }
+
+  const handleStoredArticles = () => {
     const storedCards = JSON.parse(localStorage.getItem('cards'));
 
     if (storedCards) {
@@ -100,18 +144,13 @@ function App() {
         term: '',
         status: 'results'
       })
-
-      const existingToken = localStorage.getItem('token');
-
-      if (existingToken) {
-        setToken(existingToken);
-        user.getInformation(existingToken)
-          .then(info => {
-            setUserInfo(info.data);
-            setIsLoggedIn(true);
-          });
-      }
     }
+  }
+
+  useEffect(() => {
+      const existingToken = localStorage.getItem('token');
+      validateToken(existingToken);
+      handleStoredArticles();
   }, []);
 
   return (
@@ -129,6 +168,14 @@ function App() {
                 searchStatus={searchInfo.status}
                 articles={articles}
                 setArticles={setArticles}
+                serverError={serverError}
+                setServerError={setServerError}
+                isConfirmationOpen={isConfirmationOpen}
+                isLoginOpen={isLoginOpen}
+                isRegisterOpen={isRegisterOpen}
+                handleOpenLogin={handleOpenLogin}
+                handleOpenRegister={handleOpenRegister}
+                handleClosePopups={handleClosePopups}
               />
             </Route>
           </Switch>

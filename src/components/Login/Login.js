@@ -1,7 +1,7 @@
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 import { useFormWithValidation } from '../FormValidator/FormValidator';
 
-const Login = ({ isOpen, handleClosePopup, handleLinkClick, handleLogin }) => {
+const Login = ({ isOpen, handleClosePopup, handleLinkClick, handleLogin, serverError }) => {
   
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation({ email: '', password: '' });
@@ -17,7 +17,6 @@ const Login = ({ isOpen, handleClosePopup, handleLinkClick, handleLogin }) => {
         e.preventDefault();
         handleLogin({ email: values.email, password: values.password });
         resetForm({ email: '', password: '' });
-        handleClosePopup();
       }}
       linkText="Sign up"
       onLinkClick={handleLinkClick}
@@ -59,6 +58,7 @@ const Login = ({ isOpen, handleClosePopup, handleLinkClick, handleLogin }) => {
       <span className="popup__error login-enter-password-error">
         {errors.password}
       </span>
+      <span className='popup__error'>{serverError}</span>
     </PopupWithForm>
   );
 };

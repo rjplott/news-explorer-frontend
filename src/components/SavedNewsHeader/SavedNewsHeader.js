@@ -1,8 +1,12 @@
 import React from 'react';
 import Header from '../Header/Header';
 import './SavedNewsHeader.css';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useContext } from 'react';
 
-const SavedNewsHeader = ({ name, articles, isLoggedIn, handleLogout }) => {
+const SavedNewsHeader = ({ articles, isLoggedIn, handleLogout }) => {
+
+  const user = useContext(CurrentUserContext);
 
   const determineKeywords = () => {
     const keywords = articles.displayedCards.reduce((keywordArray, currArticle) => {
@@ -25,11 +29,11 @@ const SavedNewsHeader = ({ name, articles, isLoggedIn, handleLogout }) => {
 
   return (
     <section className="saved-news-header">
-      <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} name={name} />
+      <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <div className="saved-news-header__text-wrapper">
         <p className="saved-news-header__intro">Saved articles</p>
         <h1 className="saved-news-header__title">
-          {`${name}, you have ${articles.displayedCards.length} saved articles`}
+          {`${user.name}, you have ${articles.displayedCards.length} saved articles`}
         </h1>
         <p className="saved-news-header__keywords">
           By keywords:
