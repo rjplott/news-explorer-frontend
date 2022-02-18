@@ -26,6 +26,7 @@ export default function Main({
   handleOpenRegister,
   handleClosePopups,
   handleSaveCard,
+  handleUnsaveCard
 }) {
 
   const renderResults = () => {
@@ -41,6 +42,7 @@ export default function Main({
           isLoggedIn={isLoggedIn}
           searchStatus={searchStatus}
           handleSaveCard={handleSaveCard}
+          handleUnsaveCard={handleUnsaveCard}
         />
       );
     } else {

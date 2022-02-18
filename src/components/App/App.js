@@ -83,12 +83,20 @@ function App() {
   };
 
   const handleSaveCard = (article, setId) => {
-    console.log(article);
     articleApi.create(article)
       .then(data => {
-        console.log(data);
-        setId(data._id)
-        setSavedArticles([...savedArticles, data])
+        setId(data.data._id)
+        setSavedArticles([...savedArticles, data.data])
+      })
+      .catch(err => console.log(err));
+  }
+
+  const handleUnsaveCard = (id, setId) => {
+    console.log(id, setId);
+    articleApi.delete(id)
+      .then(data => {
+        setId('');
+        setSavedArticles(articles => articles.filter(art => art._id !== id)); // only save those articles whose id is not equal to the current id
       })
       .catch(err => console.log(err));
   }
@@ -202,7 +210,7 @@ function App() {
                 handleOpenRegister={handleOpenRegister}
                 handleClosePopups={handleClosePopups}
                 handleSaveCard={handleSaveCard}
-                token={token}
+                handleUnsaveCard={handleUnsaveCard}
               />
             </Route>
           </Switch>

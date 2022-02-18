@@ -8,7 +8,8 @@ export default function NewsCardList({
   setArticles,
   isLoggedIn,
   searchStatus,
-  handleSaveCard
+  handleSaveCard,
+  handleUnsaveCard,
 }) {
   const handleShowMoreClick = () => {
     if (articles.numCards > articles.cards.length) return;
@@ -44,7 +45,7 @@ export default function NewsCardList({
           </p>
         ) : (
           displayedCards.map((card, index) => (
-            <NewsCard handleSaveCard={handleSaveCard} key={index} card={card} isLoggedIn={isLoggedIn} />
+            <NewsCard handleSaveCard={handleSaveCard} handleUnsaveCard={handleUnsaveCard} key={index} card={card} isLoggedIn={isLoggedIn} />
           ))
         )}
       </div>

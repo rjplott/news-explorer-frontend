@@ -2,7 +2,7 @@ import './NewsCard.css';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function NewsCard({ isLoggedIn, card, handleSaveCard }) {
+export default function NewsCard({ isLoggedIn, card, handleSaveCard, handleUnsaveCard }) {
   const path = useHistory().location.pathname;
   const [isHovering, setIsHovering] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -13,6 +13,7 @@ export default function NewsCard({ isLoggedIn, card, handleSaveCard }) {
     'en-US',
     dateOptions
   ); 
+
 
   const bookmark = (
     <svg width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,6 +76,9 @@ export default function NewsCard({ isLoggedIn, card, handleSaveCard }) {
     if (!isBookmarked) {
       handleSaveCard(card, setId);
       setIsBookmarked(true);
+    } else {
+      handleUnsaveCard(id, setId);
+      setIsBookmarked(false);
     }
   };
 
