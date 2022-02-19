@@ -7,7 +7,6 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function Navigation({
   isLoggedIn,
-  name,
   path,
   onSignInClick,
   handleLogout,
