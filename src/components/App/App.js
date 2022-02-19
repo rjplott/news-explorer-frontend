@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
 import { userApi, articleApi } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   const [articles, setArticles] = useState({
@@ -225,7 +226,8 @@ function App() {
           </Switch>
           <Switch>
             <Route path="/saved-news">
-              <SavedNews
+              <ProtectedRoute
+                component={SavedNews}
                 isLoggedIn={isLoggedIn}
                 handleLogout={handleLogout}
                 savedArticles={savedArticles}
