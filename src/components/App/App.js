@@ -2,9 +2,8 @@ import './App.css';
 import Main from '../Main/Main';
 import SavedNews from '../SavedNews/SavedNews';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
-import { SAVED_CARDS } from '../../utils/constants';
 import { userApi, articleApi } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
@@ -26,6 +25,8 @@ function App() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
+
+  const handleApiError = (error) => console.log(error);
 
   const handleOpenLogin = () => {
     setIsRegisterOpen(false);
@@ -54,14 +55,12 @@ function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState({});
-  const [token, setToken] = useState('');
   const [serverError, setServerError] = useState('')
 
   const handleLogin = ({ email, password }) => {
     setServerError("");
     userApi.login({ email, password })
       .then(data => {
-        console.log(data);
         localStorage.setItem('token', data.token);
         validateToken(data.token);
         handleClosePopups();
@@ -88,18 +87,19 @@ function App() {
         setId(data.data._id)
         setSavedArticles([...savedArticles, data.data])
       })
-      .catch(err => console.log(err));
+      .catch(handleApiError);
   }
 
   const handleUnsaveCard = (id, setId) => {
-    console.log(id, setId);
     articleApi.delete(id)
-      .then(data => {
+      .then(() => {
         setId('');
         setSavedArticles(articles => articles.filter(art => art._id !== id)); // only save those articles whose id is not equal to the current id
       })
-      .catch(err => console.log(err));
+      .catch(handleApiError);
   }
+
+  
 
   useEffect(() => {
     if (searchInfo.term) {
@@ -151,17 +151,26 @@ function App() {
     } 
   }, [searchInfo])
 
-  const validateToken = (token) => {
+  const validateToken = useCallback((token) => {
+    const getSavedCards = () => {
+      articleApi
+        .getSavedArticles()
+        .then((data) => {
+          setSavedArticles(data.data);
+        })
+        .catch(handleApiError);
+    };
+
     if (token) {
-      setToken(token);
       articleApi.setToken(token);
       userApi.getInformation(token).then((info) => {
         setUserInfo(info.data);
         setIsLoggedIn(true);
+        getSavedCards();
       })
-        .catch((err) => console.log(err));
+        .catch(handleApiError);
     }
-  }
+  }, []);
 
   const handleStoredArticles = () => {
     const storedCards = JSON.parse(localStorage.getItem('cards'));
@@ -181,10 +190,10 @@ function App() {
   }
 
   useEffect(() => {
-      const existingToken = localStorage.getItem('token');
-      validateToken(existingToken);
-      handleStoredArticles();
-  }, []);
+    const existingToken = localStorage.getItem('token');
+    validateToken(existingToken);
+    handleStoredArticles();
+  }, [validateToken]);
 
   return (
     <CurrentUserContext.Provider value={userInfo}>
@@ -219,7 +228,8 @@ function App() {
               <SavedNews
                 isLoggedIn={isLoggedIn}
                 handleLogout={handleLogout}
-                articles={SAVED_CARDS}
+                savedArticles={savedArticles}
+                handleUnsaveCard={handleUnsaveCard}
               />
             </Route>
           </Switch>

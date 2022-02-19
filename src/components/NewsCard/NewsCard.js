@@ -6,7 +6,7 @@ export default function NewsCard({ isLoggedIn, card, handleSaveCard, handleUnsav
   const path = useHistory().location.pathname;
   const [isHovering, setIsHovering] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [id, setId] = useState('');
+  const [id, setId] = useState('' || card._id);
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
   const convertedDate = new Date(card.date).toLocaleString(
@@ -82,6 +82,10 @@ export default function NewsCard({ isLoggedIn, card, handleSaveCard, handleUnsav
     }
   };
 
+  const handleDeleteClick = () => {
+    handleUnsaveCard(id, setId);
+  }
+
   if (path === '/') {
     return (
       <article className="news-card">
@@ -143,6 +147,7 @@ export default function NewsCard({ isLoggedIn, card, handleSaveCard, handleUnsav
         aria-label="Delete Article"
         onMouseEnter={handleHover}
         onMouseLeave={handleHover}
+        onClick={handleDeleteClick}
       >
         {isHovering ? hoverTrashIcon : trashIcon}
       </button>

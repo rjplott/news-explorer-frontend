@@ -20,7 +20,7 @@ export default function NewsCardList({
     });
   };
 
-  const { displayedCards } = articles;
+  const displayedCards = articles.displayedCards || articles;
 
   const path = useHistory().location.pathname;
 
@@ -43,11 +43,11 @@ export default function NewsCardList({
             Sorry, something went wrong during the request. There may be a
             connection issue or the server may be down. Please try again later.
           </p>
-        ) : (
-          displayedCards.map((card, index) => (
-            <NewsCard handleSaveCard={handleSaveCard} handleUnsaveCard={handleUnsaveCard} key={index} card={card} isLoggedIn={isLoggedIn} />
+        ) : displayedCards.length > 0 ? (
+          displayedCards.map((card) => (
+            <NewsCard handleSaveCard={handleSaveCard} handleUnsaveCard={handleUnsaveCard} key={card.link} card={card} isLoggedIn={isLoggedIn} />
           ))
-        )}
+        ) : (<></>)}
       </div>
       {path === '/' ? (<button
         type="button"
