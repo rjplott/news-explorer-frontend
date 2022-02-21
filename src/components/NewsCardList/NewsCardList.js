@@ -10,13 +10,14 @@ export default function NewsCardList({
   searchStatus,
   handleSaveCard,
   handleUnsaveCard,
+  handleOpenRegister,
 }) {
   const handleShowMoreClick = () => {
     if (articles.numCards > articles.cards.length) return;
     setArticles({
       ...articles,
       numCards: articles.numCards + 3,
-      displayedCards: articles.cards.slice(0, articles.numCards + 3)
+      displayedCards: articles.cards.slice(0, articles.numCards + 3),
     });
   };
 
@@ -45,18 +46,31 @@ export default function NewsCardList({
           </p>
         ) : displayedCards.length > 0 ? (
           displayedCards.map((card) => (
-            <NewsCard handleSaveCard={handleSaveCard} handleUnsaveCard={handleUnsaveCard} key={card.link} card={card} isLoggedIn={isLoggedIn} />
+            <NewsCard
+              handleSaveCard={handleSaveCard}
+              handleUnsaveCard={handleUnsaveCard}
+              key={card.link}
+              card={card}
+              isLoggedIn={isLoggedIn}
+              handleOpenRegister={handleOpenRegister}
+            />
           ))
-        ) : (<></>)}
+        ) : (
+          <></>
+        )}
       </div>
-      {path === '/' ? (<button
-        type="button"
-        aria-label="Show more articles"
-        className="news-card-list__button"
-        onClick={handleShowMoreClick}
-      >
-        Show more
-      </button>) : (<></>)}
+      {path === '/' ? (
+        <button
+          type="button"
+          aria-label="Show more articles"
+          className="news-card-list__button"
+          onClick={handleShowMoreClick}
+        >
+          Show more
+        </button>
+      ) : (
+        <></>
+      )}
     </section>
   );
 }

@@ -26,9 +26,8 @@ export default function Main({
   handleOpenRegister,
   handleClosePopups,
   handleSaveCard,
-  handleUnsaveCard
+  handleUnsaveCard,
 }) {
-
   const renderResults = () => {
     if (searchStatus === 'not searched') {
       return;
@@ -43,6 +42,7 @@ export default function Main({
           searchStatus={searchStatus}
           handleSaveCard={handleSaveCard}
           handleUnsaveCard={handleUnsaveCard}
+          handleOpenRegister={handleOpenRegister}
         />
       );
     } else {
@@ -59,7 +59,7 @@ export default function Main({
         handleRegister={handleRegister}
         serverError={serverError}
       />
-      <ConfirmationPopup 
+      <ConfirmationPopup
         isOpen={isConfirmationOpen}
         onClose={handleClosePopups}
         onLinkClick={handleOpenLogin}

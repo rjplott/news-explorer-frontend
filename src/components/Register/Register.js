@@ -1,5 +1,5 @@
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
-import { useFormWithValidation } from '../FormValidator/FormValidator';
+import { useFormWithValidation } from '../../hooks/useFormWithValidation/useFormWithValidation';
 
 const Register = ({
   isOpen,
@@ -11,6 +11,16 @@ const Register = ({
 
   const { values, handleChange, errors, isValid, resetForm } =
     useFormWithValidation({ username: '', email: '', password: '' });
+  
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleRegister({
+      name: values.username,
+      email: values.email,
+      password: values.password,
+    });
+    resetForm({ username: '', email: '', password: '' });
+  }
 
   return (
     <PopupWithForm
@@ -19,15 +29,7 @@ const Register = ({
       isOpen={isOpen}
       onClose={handleClosePopup}
       buttonText="Sign up"
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleRegister({
-          name: values.username,
-          email: values.email,
-          password: values.password,
-        });
-        resetForm({ username: '', email: '', password: '' });
-      }}
+      onSubmit={handleFormSubmit}
       linkText="Sign in"
       onLinkClick={handleLinkClick}
       isValid={isValid}
