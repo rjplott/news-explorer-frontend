@@ -50,6 +50,7 @@ export default function Navigation({
 
   const user = useContext(CurrentUserContext);
 
+
   if (isLoggedIn) {
     return (
       <div className="navigation__wrapper">
