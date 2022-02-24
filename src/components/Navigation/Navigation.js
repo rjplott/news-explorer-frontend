@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom';
 import './Navigation.css';
 import logout from '../../images/logout.svg';
 import logoutLight from '../../images/logout-light.svg';
+import { useContext } from 'react';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function Navigation({
   isLoggedIn,
-  name,
   path,
   onSignInClick,
   handleLogout,
@@ -33,6 +34,23 @@ export default function Navigation({
     </svg>
   );
 
+  const handleLoginClick = () => {
+    setIsMenuOpen(false);
+    onSignInClick();
+  };
+
+  const handleLogoutClick = () => {
+    setIsMenuOpen(false);
+    handleLogout();
+  };
+
+  const handleOpenMenu = () => setIsMenuOpen(true);
+
+  const handleCloseMenu = () => setIsMenuOpen(false);
+
+  const user = useContext(CurrentUserContext);
+
+
   if (isLoggedIn) {
     return (
       <div className="navigation__wrapper">
@@ -42,16 +60,13 @@ export default function Navigation({
           }`}
         ></div>
         {isMenuOpen ? (
-          <button
-            className="navigation__close-icon"
-            onClick={() => setIsMenuOpen(false)}
-          >
+          <button className="navigation__close-icon" onClick={handleCloseMenu}>
             {closeIcon}
           </button>
         ) : (
           <button
             className="navigation__hamburger-icon"
-            onClick={() => setIsMenuOpen(true)}
+            onClick={handleOpenMenu}
           >
             {path === '/saved-news' ? lightHamburgerIcon : hamburgerIcon}
           </button>
@@ -81,13 +96,7 @@ export default function Navigation({
               Saved Articles
             </Link>
           </li>
-          <li
-            className="navigation__list-item"
-            onClick={() => {
-              setIsMenuOpen(false);
-              handleLogout();
-            }}
-          >
+          <li className="navigation__list-item" onClick={handleLogoutClick}>
             <Link
               to="/"
               className={`navigation__link navigation__link_type_logout ${
@@ -96,7 +105,7 @@ export default function Navigation({
                   : ''
               }`}
             >
-              <span className="navigation__user-name">{name}</span>
+              <span className="navigation__user-name">{user.name}</span>
               <img
                 src={path === '/saved-news' ? logoutLight : logout}
                 alt="Logout icon"
@@ -116,16 +125,13 @@ export default function Navigation({
           }`}
         ></div>
         {isMenuOpen ? (
-          <button
-            className="navigation__close-icon"
-            onClick={() => setIsMenuOpen(false)}
-          >
+          <button className="navigation__close-icon" onClick={handleCloseMenu}>
             {closeIcon}
           </button>
         ) : (
           <button
             className="navigation__hamburger-icon"
-            onClick={() => setIsMenuOpen(true)}
+            onClick={handleOpenMenu}
           >
             {path === '/saved-news' ? lightHamburgerIcon : hamburgerIcon}
           </button>
@@ -144,10 +150,7 @@ export default function Navigation({
             <Link
               to="/"
               className="navigation__link navigation__link_type_login"
-              onClick={() => {
-                setIsMenuOpen(false);
-                onSignInClick();
-              }}
+              onClick={handleLoginClick}
             >
               Sign In
             </Link>

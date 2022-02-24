@@ -12,6 +12,18 @@ export default function SearchForm({
   const [searchValue, setSearchValue] = useState('');
   const [canSearch, setCanSearch] = useState(false);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleRequestNews(searchValue);
+    setSearchValue('');
+    setCanSearch(false);
+  };
+
+  const handleInputChange = (e) => {
+    setSearchValue(e.target.value);
+    setCanSearch(e.target.validity.valid);
+  };
+
   return (
     <div className="news-search">
       <Header
@@ -20,14 +32,7 @@ export default function SearchForm({
         handleLogout={handleLogout}
         name={name}
       />
-      <form
-        className="seach-form"
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleRequestNews(searchValue);
-          setSearchValue('');
-        }}
-      >
+      <form className="seach-form" onSubmit={handleSubmit}>
         <h2 className="search-form__title">What's going on in the world?</h2>
         <p className="search-form__subtitle">
           Find the latest news on any topic and save them to your personal
@@ -44,10 +49,7 @@ export default function SearchForm({
             minLength="2"
             maxLength="30"
             value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-              setCanSearch(e.target.validity.valid);
-            }}
+            onChange={handleInputChange}
           />
           <button
             type="submit"

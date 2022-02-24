@@ -1,23 +1,30 @@
 import React from 'react';
 import Header from '../Header/Header';
 import './SavedNewsHeader.css';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useContext } from 'react';
 
-const SavedNewsHeader = ({ name, articles, isLoggedIn, handleLogout }) => {
+const SavedNewsHeader = ({ articles, isLoggedIn, handleLogout }) => {
+
+  const user = useContext(CurrentUserContext);
 
   const determineKeywords = () => {
-    const keywords = articles.displayedCards.reduce((keywordArray, currArticle) => {
-      if (keywordArray.indexOf(currArticle.tag) < 0) {
-        keywordArray.push(currArticle.tag);
-      }
 
-      return keywordArray;
-    }, []);
+    const keywords = {};
 
-    if (keywords.length > 2) return ` ${keywords[0]}, ${keywords[1]}, and ${keywords.length - 2} others`;
+    articles.forEach((article) =>
+      keywords[article.keyword]
+        ? keywords[article.keyword]++
+        : (keywords[article.keyword] = 1)
+    );
 
-    if (keywords.length === 2) return ` ${keywords[0]} and ${keywords[1]}`;
+    const sortedKeywords = Object.entries(keywords).sort((a, b) => b[1] - a[1]);
 
-    if (keywords.length === 1) return " " + keywords[0];
+    if (sortedKeywords.length > 2) return ` ${sortedKeywords[0][0]}, ${sortedKeywords[1][0]}, and ${sortedKeywords.length - 2} others`;
+
+    if (sortedKeywords.length === 2) return ` ${sortedKeywords[0][0]} and ${sortedKeywords[1][0]}`;
+
+    if (sortedKeywords.length === 1) return " " + sortedKeywords[0][0];
 
     return 'No keywords found.'
   
@@ -25,11 +32,11 @@ const SavedNewsHeader = ({ name, articles, isLoggedIn, handleLogout }) => {
 
   return (
     <section className="saved-news-header">
-      <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} name={name} />
+      <Header isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <div className="saved-news-header__text-wrapper">
         <p className="saved-news-header__intro">Saved articles</p>
         <h1 className="saved-news-header__title">
-          {`${name}, you have ${articles.displayedCards.length} saved articles`}
+          {`${user.name}, you have ${articles.length} saved articles`}
         </h1>
         <p className="saved-news-header__keywords">
           By keywords:

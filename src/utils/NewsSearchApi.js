@@ -1,9 +1,4 @@
-const checkResponse = (res) => {
-  console.log(res);
-  return res.ok
-    ? res.json()
-    : Promise.reject(`Error: ${res.status} - ${res.message}`);
-};
+import checkResponse from './apiHelpers';
 
 const fetchNews = (searchString) => {
   const toDate = new Date().toISOString();
@@ -12,13 +7,10 @@ const fetchNews = (searchString) => {
   ).toISOString();
   const apiKey = '444eb4b36be849fabd97c1d959391725';
 
-  const url = `https://newsapi.org/v2/everything?q=${searchString}&from=${fromDate}&to=${toDate}&pageSize=100`;
+  const url = `https://nomoreparties.co/news/v2/everything?q=${searchString}&from=${fromDate}&to=${toDate}&pageSize=100&apiKey=${apiKey}`;
 
   const init = {
     method: 'GET',
-    headers: {
-      'X-Api-Key': apiKey,
-    },
   };
 
   return fetch(url, init).then(checkResponse);

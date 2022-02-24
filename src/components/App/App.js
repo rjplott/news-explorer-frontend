@@ -2,9 +2,11 @@ import './App.css';
 import Main from '../Main/Main';
 import SavedNews from '../SavedNews/SavedNews';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import fetchNews from '../../utils/NewsSearchApi';
-import SAVED_CARDS from '../../utils/constants';
+import { userApi, articleApi } from '../../utils/MainApi';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 function App() {
   const [articles, setArticles] = useState({
@@ -13,37 +15,118 @@ function App() {
     displayedCards: []
   });
 
+  const [savedArticles, setSavedArticles] = useState([]);
+
   const [searchInfo, setSearchInfo] = useState({ status: 'not searched', term: '' });
 
   const handleRequestNews = (search) => {
     setSearchInfo({ status: 'is searching', term: search });
   };
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
 
-  const handleLogin = () => {
-    setUsername('Placeholder');
-    setIsLoggedIn(true);
+  const handleApiError = (error) => console.log(error);
+
+  const handleOpenLogin = () => {
+    setIsRegisterOpen(false);
+    setIsLoginOpen(true);
+    setIsConfirmationOpen(false);
   };
-  const handleLogout = () => setIsLoggedIn(false);
-  const handleRegister = (name) => {
-    setUsername(name);
-    setIsLoggedIn(true);
+
+  const handleOpenRegister = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(true);
+    setIsConfirmationOpen(false);
   };
+
+  const handleOpenConfirmation = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(false);
+    setIsConfirmationOpen(true);
+  };
+
+  const handleClosePopups = () => {
+    setIsLoginOpen(false);
+    setIsRegisterOpen(false);
+    setIsConfirmationOpen(false);
+    setServerError('');
+  };
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState({});
+  const [serverError, setServerError] = useState('')
+
+  const handleLogin = ({ email, password }) => {
+    setServerError("");
+    userApi.login({ email, password })
+      .then(data => {
+        localStorage.setItem('token', data.token);
+        validateToken(data.token);
+        handleClosePopups();
+      })
+      .catch(() => setServerError('Email or password not recognized, please try again.'));
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false)
+    localStorage.removeItem('token');
+    setUserInfo({});
+  }
+
+  const handleRegister = ({ name, email, password }) => {
+    setServerError("");
+    userApi.register({name, email, password})
+      .then(() => handleOpenConfirmation())
+      .catch(() => setServerError('Registration was not successful, please try again.'));
+  };
+
+  const handleSaveCard = (article, setId) => {
+    articleApi.create(article)
+      .then(data => {
+        setId(data.data._id)
+        setSavedArticles([...savedArticles, data.data])
+      })
+      .catch(handleApiError);
+  }
+
+  const handleUnsaveCard = (id, setId) => {
+    articleApi.delete(id)
+      .then(() => {
+        setId('');
+        setSavedArticles(articles => articles.filter(art => art._id !== id)); // only save those articles whose id is not equal to the current id
+      })
+      .catch(handleApiError);
+  }
+
+  
 
   useEffect(() => {
     if (searchInfo.term) {
       fetchNews(searchInfo.term)
         .then((data) => {
-
-          setArticles({
-            cards: data.articles,
-            numCards: 3,
-            displayedCards: data.articles.slice(0, 3)
+          const cards = data.articles.map(article => {
+              return {
+                keyword: searchInfo.term,
+                title: article.title,
+                text: article.description,
+                date: article.publishedAt,
+                source: article.source.name,
+                link: article.url,
+                image: article.urlToImage,
+              };
           })
 
-          if (data.articles.length > 0) {
+          setArticles({
+            cards: cards,
+            numCards: 3,
+            displayedCards: cards.slice(0, 3)
+          })
+
+          localStorage.setItem('cards', JSON.stringify(cards));
+
+          if (cards.length > 0) {
             setSearchInfo({
               term: '',
               status: 'results'
@@ -69,11 +152,31 @@ function App() {
     } 
   }, [searchInfo])
 
-  useEffect(() => {
+  const validateToken = useCallback((token) => {
+    const getSavedCards = () => {
+      articleApi
+        .getSavedArticles()
+        .then((data) => {
+          setSavedArticles(data.data);
+        })
+        .catch(handleApiError);
+    };
+
+    if (token) {
+      articleApi.setToken(token);
+      userApi.getInformation(token).then((info) => {
+        setUserInfo(info.data);
+        setIsLoggedIn(true);
+        getSavedCards();
+      })
+        .catch(handleApiError);
+    }
+  }, []);
+
+  const handleStoredArticles = () => {
     const storedCards = JSON.parse(localStorage.getItem('cards'));
 
     if (storedCards) {
-
       setArticles({
         cards: storedCards,
         numCards: 3,
@@ -85,38 +188,56 @@ function App() {
         status: 'results'
       })
     }
-  }, []);
+  }
+
+  useEffect(() => {
+    const existingToken = localStorage.getItem('token');
+    validateToken(existingToken);
+    handleStoredArticles();
+  }, [validateToken]);
 
   return (
-    <div className="app">
-      <BrowserRouter>
-        <Switch>
-          <Route exact path="/">
-            <Main
-              isLoggedIn={isLoggedIn}
-              handleLogin={handleLogin}
-              handleLogout={handleLogout}
-              handleRegister={handleRegister}
-              name={username}
-              handleRequestNews={handleRequestNews}
-              searchStatus={searchInfo.status}
-              articles={articles}
-              setArticles={setArticles}
-            />
-          </Route>
-        </Switch>
-        <Switch>
-          <Route path="/saved-news">
-            <SavedNews
-              isLoggedIn={isLoggedIn}
-              handleLogout={handleLogout}
-              name={username}
-              articles={SAVED_CARDS}
-            />
-          </Route>
-        </Switch>
-      </BrowserRouter>
-    </div>
+    <CurrentUserContext.Provider value={userInfo}>
+      <div className="app">
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/">
+              <Main
+                isLoggedIn={isLoggedIn}
+                handleLogin={handleLogin}
+                handleLogout={handleLogout}
+                handleRegister={handleRegister}
+                handleRequestNews={handleRequestNews}
+                searchStatus={searchInfo.status}
+                articles={articles}
+                setArticles={setArticles}
+                serverError={serverError}
+                setServerError={setServerError}
+                isConfirmationOpen={isConfirmationOpen}
+                isLoginOpen={isLoginOpen}
+                isRegisterOpen={isRegisterOpen}
+                handleOpenLogin={handleOpenLogin}
+                handleOpenRegister={handleOpenRegister}
+                handleClosePopups={handleClosePopups}
+                handleSaveCard={handleSaveCard}
+                handleUnsaveCard={handleUnsaveCard}
+              />
+            </Route>
+          </Switch>
+          <Switch>
+            <Route path="/saved-news">
+              <ProtectedRoute
+                component={SavedNews}
+                isLoggedIn={isLoggedIn}
+                handleLogout={handleLogout}
+                savedArticles={savedArticles}
+                handleUnsaveCard={handleUnsaveCard}
+              />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 

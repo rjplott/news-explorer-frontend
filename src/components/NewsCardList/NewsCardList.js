@@ -7,18 +7,21 @@ export default function NewsCardList({
   articles,
   setArticles,
   isLoggedIn,
-  searchStatus
+  searchStatus,
+  handleSaveCard,
+  handleUnsaveCard,
+  handleOpenRegister,
 }) {
   const handleShowMoreClick = () => {
     if (articles.numCards > articles.cards.length) return;
     setArticles({
       ...articles,
       numCards: articles.numCards + 3,
-      displayedCards: articles.cards.slice(0, articles.numCards + 3)
+      displayedCards: articles.cards.slice(0, articles.numCards + 3),
     });
   };
 
-  const { displayedCards } = articles;
+  const displayedCards = articles.displayedCards || articles;
 
   const path = useHistory().location.pathname;
 
@@ -41,20 +44,33 @@ export default function NewsCardList({
             Sorry, something went wrong during the request. There may be a
             connection issue or the server may be down. Please try again later.
           </p>
-        ) : (
-          displayedCards.map((card, index) => (
-            <NewsCard key={index} card={card} isLoggedIn={isLoggedIn} />
+        ) : displayedCards.length > 0 ? (
+          displayedCards.map((card) => (
+            <NewsCard
+              handleSaveCard={handleSaveCard}
+              handleUnsaveCard={handleUnsaveCard}
+              key={card.link}
+              card={card}
+              isLoggedIn={isLoggedIn}
+              handleOpenRegister={handleOpenRegister}
+            />
           ))
+        ) : (
+          <></>
         )}
       </div>
-      {path === '/' ? (<button
-        type="button"
-        aria-label="Show more articles"
-        className="news-card-list__button"
-        onClick={handleShowMoreClick}
-      >
-        Show more
-      </button>) : (<></>)}
+      {path === '/' ? (
+        <button
+          type="button"
+          aria-label="Show more articles"
+          className="news-card-list__button"
+          onClick={handleShowMoreClick}
+        >
+          Show more
+        </button>
+      ) : (
+        <></>
+      )}
     </section>
   );
 }

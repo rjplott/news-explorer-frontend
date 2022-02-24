@@ -2,13 +2,20 @@ import './NewsCard.css';
 import { useHistory } from 'react-router-dom';
 import { useState } from 'react';
 
-export default function NewsCard({ isLoggedIn, card }) {
+export default function NewsCard({
+  isLoggedIn,
+  card,
+  handleSaveCard,
+  handleUnsaveCard,
+  handleOpenRegister,
+}) {
   const path = useHistory().location.pathname;
   const [isHovering, setIsHovering] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [id, setId] = useState('' || card._id);
 
   const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-  const convertedDate = new Date(card.publishedAt).toLocaleString(
+  const convertedDate = new Date(card.date).toLocaleString(
     'en-US',
     dateOptions
   );
@@ -68,9 +75,22 @@ export default function NewsCard({ isLoggedIn, card }) {
   };
 
   const handleSaveClick = () => {
-    if (isLoggedIn) {
-      setIsBookmarked(!isBookmarked);
+    if (!isLoggedIn) {
+      handleOpenRegister();
+      return;
     }
+
+    if (!isBookmarked) {
+      handleSaveCard(card, setId);
+      setIsBookmarked(true);
+    } else {
+      handleUnsaveCard(id, setId);
+      setIsBookmarked(false);
+    }
+  };
+
+  const handleDeleteClick = () => {
+    handleUnsaveCard(id, setId);
   };
 
   if (path === '/') {
@@ -109,18 +129,18 @@ export default function NewsCard({ isLoggedIn, card }) {
             ? hoverBookermark
             : bookmark}
         </button>
-        <img className="news-card__image" src={card.urlToImage} alt="" />
+        <img className="news-card__image" src={card.image} alt="" />
         <p className="news-card__date">{convertedDate}</p>
         <h2 className="news-card__title">{card.title}</h2>
-        <p className="news-card__content">{card.content}</p>
-        <p className="news-card__source">{card.source.name}</p>
+        <p className="news-card__content">{card.text}</p>
+        <p className="news-card__source">{card.source}</p>
       </article>
     );
   }
 
   return (
     <article className="news-card">
-      <div className="news-card__tag">{card.tag}</div>
+      <div className="news-card__tag">{card.keyword}</div>
       <div
         className={`news-card__tooltip ${
           isHovering && 'news-card__tooltip_visible'
@@ -134,13 +154,14 @@ export default function NewsCard({ isLoggedIn, card }) {
         aria-label="Delete Article"
         onMouseEnter={handleHover}
         onMouseLeave={handleHover}
+        onClick={handleDeleteClick}
       >
         {isHovering ? hoverTrashIcon : trashIcon}
       </button>
       <img className="news-card__image" src={card.image} alt="" />
       <p className="news-card__date">{convertedDate}</p>
       <h2 className="news-card__title">{card.title}</h2>
-      <p className="news-card__content">{card.content}</p>
+      <p className="news-card__content">{card.text}</p>
       <p className="news-card__source">{card.source}</p>
     </article>
   );

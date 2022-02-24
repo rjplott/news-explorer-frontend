@@ -4,20 +4,24 @@ import NewsCardList from '../NewsCardList/NewsCardList';
 import Footer from '../Footer/Footer';
 
 const SavedNews = ({
-  articles,
+  savedArticles,
   isLoggedIn,
   handleLogout,
-  name,
+  handleUnsaveCard
 }) => {
+
+
   return (
     <div className="saved-news">
       <SavedNewsHeader
-        name={name}
         isLoggedIn={isLoggedIn}
-        articles={articles}
+        articles={savedArticles}
         handleLogout={handleLogout}
       />
-      <NewsCardList articles={articles} />
+      <NewsCardList
+        articles={savedArticles}
+        handleUnsaveCard={handleUnsaveCard}
+      />
       <Footer />
     </div>
   );
