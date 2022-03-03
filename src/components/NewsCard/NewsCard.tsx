@@ -3,11 +3,27 @@ import { useHistory } from 'react-router-dom';
 import * as React from 'react';
 import { useState } from 'react';
 
+type Card = {
+  _id: string;
+  date: Date;
+  image: string;
+  title: string;
+  text: string;
+  source: string;
+  keyword: string;
+};
+
 type Props = {
   isLoggedIn: boolean;
   card: Card;
-  handleSaveCard: () => void;
-  handleUnsaveCard: () => void;
+  handleSaveCard: (
+    card: Card,
+    setId: React.Dispatch<React.SetStateAction<string>>
+  ) => void;
+  handleUnsaveCard: (
+    id: string,
+    setId: React.Dispatch<React.SetStateAction<string>>
+  ) => void;
   handleOpenRegister: () => void;
 };
 
@@ -17,13 +33,17 @@ export default function NewsCard({
   handleSaveCard,
   handleUnsaveCard,
   handleOpenRegister,
-}: Props) {
+}: Props): JSX.Element {
   const path = useHistory().location.pathname;
   const [isHovering, setIsHovering] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [id, setId] = useState('' || card._id);
 
-  const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const dateOptions = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  } as const;
   const convertedDate = new Date(card.date).toLocaleString(
     'en-US',
     dateOptions
@@ -79,11 +99,11 @@ export default function NewsCard({
       />
     </svg>
   );
-  const handleHover = () => {
+  const handleHover = (): void => {
     setIsHovering((currentState) => !currentState);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = (): void => {
     if (!isLoggedIn) {
       handleOpenRegister();
       return;
@@ -98,7 +118,7 @@ export default function NewsCard({
     }
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (): void => {
     handleUnsaveCard(id, setId);
   };
 
