@@ -2,7 +2,7 @@ import * as React from 'react';
 import avatar from '../../images/avatar-image.png';
 import './About.css';
 
-export default function About() {
+export default function About(): JSX.Element {
   return (
     <section className='about'>
       <img

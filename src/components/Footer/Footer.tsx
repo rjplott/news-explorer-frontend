@@ -3,7 +3,7 @@ import github from '../../images/github.svg';
 import facebook from '../../images/facebook.svg';
 import './Footer.css';
 
-export default function Footer() {
+export default function Footer(): JSX.Element {
   return (
     <footer className='footer'>
       <div className='footer__inner-wrapper'>
