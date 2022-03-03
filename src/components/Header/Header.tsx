@@ -1,15 +1,22 @@
 import Navigation from '../Navigation/Navigation';
 import './Header.css';
 import { useHistory } from 'react-router-dom';
-import { useState } from 'react';
+import * as React from 'react';
+
+type Props = {
+  isLoggedIn: boolean;
+  onSignInClick: () => void;
+  handleLogout: () => void;
+  name: string;
+};
 
 export default function Header({
   isLoggedIn,
   onSignInClick,
   handleLogout,
   name,
-}) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+}: Props) {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const path = useHistory().location.pathname;
 
@@ -34,7 +41,6 @@ export default function Header({
         <Navigation
           isLoggedIn={isLoggedIn}
           path={path}
-          name={name}
           onSignInClick={onSignInClick}
           handleLogout={handleLogout}
           isMenuOpen={isMenuOpen}
