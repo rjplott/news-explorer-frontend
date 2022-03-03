@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import avatar from '../../images/avatar-image.png';
 import './About.css';
 
