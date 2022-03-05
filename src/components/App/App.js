@@ -11,7 +11,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 function App() {
   const [articles, setArticles] = useState({
     cards: [],
-    numDiplayed: 0,
+    numDisplayed: 0,
     displayedCards: []
   });
 
@@ -120,7 +120,7 @@ function App() {
 
           setArticles({
             cards: cards,
-            numCards: 3,
+            numDisplayed: 3,
             displayedCards: cards.slice(0, 3)
           })
 
@@ -145,7 +145,7 @@ function App() {
           });
           setArticles({
             cards: [],
-            numCards: 0,
+            numDisplayed: 0,
             displayedCards: []
           })
         });
@@ -179,7 +179,7 @@ function App() {
     if (storedCards) {
       setArticles({
         cards: storedCards,
-        numCards: 3,
+        numDisplayed: 3,
         displayedCards: storedCards.slice(0, 3)
       })
 

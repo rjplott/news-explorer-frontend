@@ -1,22 +1,12 @@
 import './NewsCard.css';
-import { useHistory } from 'react-router-dom';
 import * as React from 'react';
 import { useState } from 'react';
+import { Card } from '../../shared/types';
 
-type Card = {
-  _id: string;
-  date: Date;
-  image: string;
-  title: string;
-  text: string;
-  source: string;
-  keyword: string;
-};
-
-type Props = {
-  isLoggedIn: boolean;
+interface Props {
+  isLoggedIn?: boolean;
   card: Card;
-  handleSaveCard: (
+  handleSaveCard?: (
     card: Card,
     setId: React.Dispatch<React.SetStateAction<string>>
   ) => void;
@@ -24,8 +14,8 @@ type Props = {
     id: string,
     setId: React.Dispatch<React.SetStateAction<string>>
   ) => void;
-  handleOpenRegister: () => void;
-};
+  handleOpenRegister?: () => void;
+}
 
 export default function NewsCard({
   isLoggedIn,
@@ -34,7 +24,6 @@ export default function NewsCard({
   handleUnsaveCard,
   handleOpenRegister,
 }: Props): JSX.Element {
-  const path = useHistory().location.pathname;
   const [isHovering, setIsHovering] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [id, setId] = useState('' || card._id);
@@ -99,9 +88,48 @@ export default function NewsCard({
       />
     </svg>
   );
+
   const handleHover = (): void => {
     setIsHovering((currentState) => !currentState);
   };
+
+  const handleDeleteClick = (): void => {
+    handleUnsaveCard(id, setId);
+  };
+
+  if (
+    typeof isLoggedIn === 'undefined' ||
+    !handleOpenRegister ||
+    !handleSaveCard
+  ) {
+    return (
+      <article className='news-card'>
+        <div className='news-card__tag'>{card.keyword}</div>
+        <div
+          className={`news-card__tooltip ${
+            isHovering && 'news-card__tooltip_visible'
+          }`}
+        >
+          Remove from saved
+        </div>
+        <button
+          className='news-card__delete-button news-card__button'
+          type='button'
+          aria-label='Delete Article'
+          onMouseEnter={handleHover}
+          onMouseLeave={handleHover}
+          onClick={handleDeleteClick}
+        >
+          {isHovering ? hoverTrashIcon : trashIcon}
+        </button>
+        <img className='news-card__image' src={card.image} alt='' />
+        <p className='news-card__date'>{convertedDate}</p>
+        <h2 className='news-card__title'>{card.title}</h2>
+        <p className='news-card__content'>{card.text}</p>
+        <p className='news-card__source'>{card.source}</p>
+      </article>
+    );
+  }
 
   const handleSaveClick = (): void => {
     if (!isLoggedIn) {
@@ -118,74 +146,36 @@ export default function NewsCard({
     }
   };
 
-  const handleDeleteClick = (): void => {
-    handleUnsaveCard(id, setId);
-  };
-
-  if (path === '/') {
-    return (
-      <article className='news-card'>
-        {!isLoggedIn ? (
-          <div
-            className={`news-card__tooltip ${
-              isHovering && 'news-card__tooltip_visible'
-            }`}
-          >
-            Sign in to save articles
-          </div>
-        ) : isBookmarked ? (
-          <div
-            className={`news-card__tooltip ${
-              isHovering && 'news-card__tooltip_visible'
-            }`}
-          >
-            Remove from saved
-          </div>
-        ) : (
-          ''
-        )}
-        <button
-          className='news-card__save-button news-card__button'
-          type='button'
-          aria-label='Save Article'
-          onMouseEnter={handleHover}
-          onMouseLeave={handleHover}
-          onClick={handleSaveClick}
-        >
-          {isBookmarked
-            ? savedBookmark
-            : isHovering
-            ? hoverBookermark
-            : bookmark}
-        </button>
-        <img className='news-card__image' src={card.image} alt='' />
-        <p className='news-card__date'>{convertedDate}</p>
-        <h2 className='news-card__title'>{card.title}</h2>
-        <p className='news-card__content'>{card.text}</p>
-        <p className='news-card__source'>{card.source}</p>
-      </article>
-    );
-  }
-
   return (
     <article className='news-card'>
-      <div className='news-card__tag'>{card.keyword}</div>
-      <div
-        className={`news-card__tooltip ${
-          isHovering && 'news-card__tooltip_visible'
-        }`}
-      >
-        Remove from saved
-      </div>
+      {!isLoggedIn ? (
+        <div
+          className={`news-card__tooltip ${
+            isHovering && 'news-card__tooltip_visible'
+          }`}
+        >
+          Sign in to save articles
+        </div>
+      ) : isBookmarked ? (
+        <div
+          className={`news-card__tooltip ${
+            isHovering && 'news-card__tooltip_visible'
+          }`}
+        >
+          Remove from saved
+        </div>
+      ) : (
+        ''
+      )}
       <button
-        className='news-card__delete-button news-card__button'
+        className='news-card__save-button news-card__button'
         type='button'
-        aria-label='Delete Article'
+        aria-label='Save Article'
         onMouseEnter={handleHover}
         onMouseLeave={handleHover}
-        onClick={handleDeleteClick}
+        onClick={handleSaveClick}
       >
-        {isHovering ? hoverTrashIcon : trashIcon}
+        {isBookmarked ? savedBookmark : isHovering ? hoverBookermark : bookmark}
       </button>
       <img className='news-card__image' src={card.image} alt='' />
       <p className='news-card__date'>{convertedDate}</p>
