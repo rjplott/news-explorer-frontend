@@ -18,3 +18,23 @@ export interface Articles {
 export interface User {
   name: string;
 }
+
+export interface FormValidationData {
+  values: {
+    [k: string]: string;
+  };
+  errors: {
+    [k: string]: string;
+  };
+  isValid: boolean;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  resetForm: (
+    values: {
+      [k: string]: string;
+    },
+    errors: {
+      [k: string]: string;
+    },
+    isValid: boolean
+  ) => void;
+}
