@@ -5,16 +5,14 @@ import * as React from 'react';
 
 type Props = {
   isLoggedIn: boolean;
-  onSignInClick: () => void;
+  onSignInClick?: () => void;
   handleLogout: () => void;
-  name: string;
 };
 
 export default function Header({
   isLoggedIn,
   onSignInClick,
   handleLogout,
-  name,
 }: Props) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -38,14 +36,23 @@ export default function Header({
         >
           NewsExplorer
         </h1>
+        {typeof onSignInClick === 'undefined' ? 
         <Navigation
+        isLoggedIn={isLoggedIn}
+        path={path}
+        handleLogout={handleLogout}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+      />
+      :
+      <Navigation
           isLoggedIn={isLoggedIn}
           path={path}
           onSignInClick={onSignInClick}
           handleLogout={handleLogout}
           isMenuOpen={isMenuOpen}
           setIsMenuOpen={setIsMenuOpen}
-        />
+        />}
       </div>
     </header>
   );

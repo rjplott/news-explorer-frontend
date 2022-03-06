@@ -14,3 +14,7 @@ export interface Articles {
   numDisplayed: number;
   displayedCards: Card[];
 }
+
+export interface User {
+  name: string;
+}

@@ -5,19 +5,16 @@ import logoutLight from '../../images/logout-light.svg';
 import { useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as React from 'react';
+import { User } from '../../shared/types';
 
 type Props = {
   isLoggedIn: boolean;
-  onSignInClick: () => void;
+  onSignInClick?: () => void;
   handleLogout: () => void;
   path: string;
   isMenuOpen: boolean;
   setIsMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-interface User {
-  name: string;
-}
 
 export default function Navigation({
   isLoggedIn,
@@ -48,11 +45,6 @@ export default function Navigation({
     </svg>
   );
 
-  const handleLoginClick = (): void => {
-    setIsMenuOpen(false);
-    onSignInClick();
-  };
-
   const handleLogoutClick = (): void => {
     setIsMenuOpen(false);
     handleLogout();
@@ -64,7 +56,54 @@ export default function Navigation({
 
   const user: User = useContext(CurrentUserContext);
 
-  if (isLoggedIn) {
+  if (!isLoggedIn && typeof onSignInClick !== 'undefined') {
+    const handleLoginClick = (): void => {
+      setIsMenuOpen(false);
+      onSignInClick();
+    };
+
+    return (
+      <div className='navigation__wrapper'>
+        <div
+          className={`navigation__overlay ${
+            isMenuOpen ? 'navigation__overlay_active' : ''
+          }`}
+        ></div>
+        {isMenuOpen ? (
+          <button className='navigation__close-icon' onClick={handleCloseMenu}>
+            {closeIcon}
+          </button>
+        ) : (
+          <button
+            className='navigation__hamburger-icon'
+            onClick={handleOpenMenu}
+          >
+            {path === '/saved-news' ? lightHamburgerIcon : hamburgerIcon}
+          </button>
+        )}
+
+        <ul className={`navigation ${isMenuOpen ? 'navigation_active' : ''}`}>
+          <li className='navigation__list-item'>
+            <Link
+              to='/'
+              className='navigation__link navigation__link_current navigation__link_type_home-logged-out'
+            >
+              Home
+            </Link>
+          </li>
+          <li className='navigation__list-item'>
+            <Link
+              to='/'
+              className='navigation__link navigation__link_type_login'
+              onClick={handleLoginClick}
+            >
+              Sign In
+            </Link>
+          </li>
+        </ul>
+      </div>
+    );
+  } else {
     return (
       <div className='navigation__wrapper'>
         <div
@@ -124,48 +163,6 @@ export default function Navigation({
                 alt='Logout icon'
                 className='navigation__logout-icon'
               />
-            </Link>
-          </li>
-        </ul>
-      </div>
-    );
-  } else {
-    return (
-      <div className='navigation__wrapper'>
-        <div
-          className={`navigation__overlay ${
-            isMenuOpen ? 'navigation__overlay_active' : ''
-          }`}
-        ></div>
-        {isMenuOpen ? (
-          <button className='navigation__close-icon' onClick={handleCloseMenu}>
-            {closeIcon}
-          </button>
-        ) : (
-          <button
-            className='navigation__hamburger-icon'
-            onClick={handleOpenMenu}
-          >
-            {path === '/saved-news' ? lightHamburgerIcon : hamburgerIcon}
-          </button>
-        )}
-
-        <ul className={`navigation ${isMenuOpen ? 'navigation_active' : ''}`}>
-          <li className='navigation__list-item'>
-            <Link
-              to='/'
-              className='navigation__link navigation__link_current navigation__link_type_home-logged-out'
-            >
-              Home
-            </Link>
-          </li>
-          <li className='navigation__list-item'>
-            <Link
-              to='/'
-              className='navigation__link navigation__link_type_login'
-              onClick={handleLoginClick}
-            >
-              Sign In
             </Link>
           </li>
         </ul>
