@@ -20,8 +20,6 @@ const SavedNews = ({
   handleLogout,
   handleUnsaveCard,
 }: SavedNewsProps): JSX.Element => {
-  const path = 'saved-news';
-
   return (
     <div className='saved-news'>
       <SavedNewsHeader
@@ -32,7 +30,7 @@ const SavedNews = ({
       <NewsCardList
         articles={savedArticles}
         handleUnsaveCard={handleUnsaveCard}
-        path={path}
+        path='saved-news'
       />
       <Footer />
     </div>
