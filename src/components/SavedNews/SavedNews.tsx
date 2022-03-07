@@ -4,7 +4,7 @@ import NewsCardList from '../NewsCardList/NewsCardList';
 import Footer from '../Footer/Footer';
 import { Articles } from '../../shared/types';
 
-type Props = {
+export type SavedNewsProps = {
   savedArticles: Articles;
   isLoggedIn: boolean;
   handleLogout: () => void;
@@ -19,7 +19,7 @@ const SavedNews = ({
   isLoggedIn,
   handleLogout,
   handleUnsaveCard,
-}: Props): JSX.Element => {
+}: SavedNewsProps): JSX.Element => {
   const path = 'saved-news';
 
   return (
