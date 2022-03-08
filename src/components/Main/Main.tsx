@@ -7,7 +7,7 @@ import Footer from '../Footer/Footer';
 import Register from '../Register/Register';
 import ConfirmationPopup from '../ConfirmationPopup/ConfirmationPopup';
 import Login from '../Login/Login';
-import { Articles } from '../../shared/types';
+import { Articles, Card } from '../../shared/types';
 import React from 'react';
 
 interface Props {
@@ -15,9 +15,23 @@ interface Props {
   setArticles: React.Dispatch<React.SetStateAction<Articles>>;
   isLoggedIn: boolean;
   handleLogout: () => void;
-  handleLogin: () => void;
-  handleRegister: () => void;
-  handleRequestNews: () => void;
+  handleLogin: ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => void;
+  handleRegister: ({
+    email,
+    name,
+    password,
+  }: {
+    email: string;
+    password: string;
+    name: string;
+  }) => void;
+  handleRequestNews: (search: string) => void;
   searchStatus: string;
   serverError: string;
   isLoginOpen: boolean;
@@ -26,8 +40,14 @@ interface Props {
   handleOpenLogin: () => void;
   handleOpenRegister: () => void;
   handleClosePopups: () => void;
-  handleSaveCard: () => void;
-  handleUnsaveCard: () => void;
+  handleSaveCard: (
+    article: Card,
+    setId: React.Dispatch<React.SetStateAction<string>>
+  ) => void;
+  handleUnsaveCard: (
+    id: string,
+    setId: React.Dispatch<React.SetStateAction<string>>
+  ) => void;
 }
 
 export default function Main({

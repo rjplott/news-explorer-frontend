@@ -1,7 +1,7 @@
 import NewsCard from '../NewsCard/NewsCard';
 import React from 'react';
 import './NewsCardList.css';
-import { Articles } from '../../shared/types';
+import { Articles, Card } from '../../shared/types';
 
 interface BaseProps {
   articles: Articles;
@@ -13,7 +13,10 @@ interface BaseProps {
 interface HomeProps extends BaseProps {
   path: 'home';
   setArticles: React.Dispatch<React.SetStateAction<Articles>>;
-  handleSaveCard: () => void;
+  handleSaveCard: (
+    article: Card,
+    setId: React.Dispatch<React.SetStateAction<string>>
+  ) => void;
   handleOpenRegister: () => void;
   isLoggedIn?: boolean;
   searchStatus?: string;
