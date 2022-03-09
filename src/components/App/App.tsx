@@ -77,7 +77,10 @@ function App() {
   };
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState<{
+    name: string;
+    email: string;
+  } | null>(null);
   const [serverError, setServerError] = useState('');
 
   const handleLogin = ({
@@ -103,7 +106,7 @@ function App() {
   const handleLogout = (): void => {
     setIsLoggedIn(false);
     localStorage.removeItem('token');
-    setUserInfo({});
+    setUserInfo(null);
   };
 
   const handleRegister = ({
@@ -158,7 +161,7 @@ function App() {
       .catch(handleApiError);
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     if (searchInfo.term) {
       fetchNews(searchInfo.term)
         .then((data) => {
@@ -208,12 +211,15 @@ function App() {
     }
   }, [searchInfo]);
 
-  const validateToken = useCallback((token) => {
-    const getSavedCards = () => {
+  const validateToken = useCallback((token: string) => {
+    const getSavedCards = (): void => {
       articleApi
         .getSavedArticles()
         .then((data) => {
-          setSavedArticles(data.data);
+          setSavedArticles((prevArticles) => ({
+            ...prevArticles,
+            cards: data.data,
+          }));
         })
         .catch(handleApiError);
     };
@@ -231,7 +237,7 @@ function App() {
     }
   }, []);
 
-  const handleStoredArticles = () => {
+  const handleStoredArticles = (): void => {
     let storedCards: Card[] | null = JSON.parse(
       localStorage.getItem('cards') || 'null'
     );
@@ -250,9 +256,11 @@ function App() {
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     const existingToken = localStorage.getItem('token');
-    validateToken(existingToken);
+    if (existingToken) {
+      validateToken(existingToken);
+    }
     handleStoredArticles();
   }, [validateToken]);
 
