@@ -7,21 +7,7 @@ import fetchNews from '../../utils/NewsSearchApi';
 import { userApi, articleApi } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import withProtectedRoute from '../withProtectedRoute/withProtectedRoute';
-import { Card, Articles } from '../../shared/types';
-
-interface ApiArticle {
-  source: {
-    id: null | string;
-    name: string;
-  };
-  author: string;
-  title: string;
-  description: string;
-  url: string;
-  urlToImage: string;
-  publishedAt: string;
-  content: string;
-}
+import { Card, Articles, ApiArticle } from '../../shared/types';
 
 function App() {
   const [articles, setArticles] = useState<Articles>({
@@ -134,7 +120,7 @@ function App() {
     articleApi
       .create(article)
       .then((data) => {
-        setId(data.data._id);
+        if (data.data._id) setId(data.data._id);
         setSavedArticles({
           ...savedArticles,
           cards: [...savedArticles.cards, data.data],

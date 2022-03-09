@@ -1,6 +1,13 @@
+import { ApiArticle } from '../shared/types';
 import checkResponse from './apiHelpers';
 
-const fetchNews = (searchString) => {
+interface ApiResponse {
+  status: 'ok' | 'error';
+  totalResults: number;
+  articles: ApiArticle[];
+}
+
+const fetchNews = (searchString: string): Promise<ApiResponse> => {
   const toDate = new Date().toISOString();
   const fromDate = new Date(
     new Date().getTime() - 7 * 24 * 60 * 60 * 1000

@@ -1,6 +1,6 @@
 export interface Card {
-  _id: string;
-  date: Date;
+  _id?: string;
+  date: string;
   image: string;
   title: string;
   text: string;
@@ -37,4 +37,18 @@ export interface FormValidationData {
     },
     isValid: boolean
   ) => void;
+}
+
+export interface ApiArticle {
+  source: {
+    id: null | string;
+    name: string;
+  };
+  author: string;
+  title: string;
+  description: string;
+  url: string;
+  urlToImage: string;
+  publishedAt: string;
+  content: string;
 }
