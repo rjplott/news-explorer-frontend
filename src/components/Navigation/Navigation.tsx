@@ -44,7 +44,6 @@ export default function Navigation({
       />
     </svg>
   );
-
   const handleLogoutClick = (): void => {
     setIsMenuOpen(false);
     handleLogout();
