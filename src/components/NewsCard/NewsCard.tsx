@@ -1,13 +1,13 @@
 import './NewsCard.css';
 import * as React from 'react';
 import { useState } from 'react';
-import { Card } from '../../shared/types';
+import { Card, SavedCard } from '../../shared/types';
 
 interface Props {
   isLoggedIn?: boolean;
-  card: Card;
+  card: Card | SavedCard;
   handleSaveCard?: (
-    card: Card,
+    card: Card | SavedCard,
     setId: React.Dispatch<React.SetStateAction<string>>
   ) => void;
   handleUnsaveCard: (
@@ -24,9 +24,13 @@ export default function NewsCard({
   handleUnsaveCard,
   handleOpenRegister,
 }: Props): JSX.Element {
+  function isSavedCard(card: Card | SavedCard): card is SavedCard {
+    return '_id' in card;
+  }
+
   const [isHovering, setIsHovering] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
-  const [id, setId] = useState('' || card._id);
+  const [id, setId] = useState(isSavedCard(card) ? card._id : '');
 
   const dateOptions = {
     year: 'numeric',

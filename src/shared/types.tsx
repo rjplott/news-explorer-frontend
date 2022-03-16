@@ -1,5 +1,4 @@
 export interface Card {
-  _id?: string;
   date: string;
   image: string;
   title: string;
@@ -9,10 +8,20 @@ export interface Card {
   link: string;
 }
 
+export interface SavedCard extends Card {
+  _id: string;
+}
+
 export interface Articles {
   cards: Card[];
   numDisplayed: number;
   displayedCards: Card[];
+}
+
+export interface SavedArticles {
+  cards: SavedCard[];
+  numDisplayed: 0;
+  displayedCards: SavedCard[];
 }
 
 export interface User {

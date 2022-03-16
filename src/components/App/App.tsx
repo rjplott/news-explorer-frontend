@@ -7,7 +7,7 @@ import fetchNews from '../../utils/NewsSearchApi';
 import { userApi, articleApi } from '../../utils/MainApi';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import withProtectedRoute from '../withProtectedRoute/withProtectedRoute';
-import { Card, Articles, ApiArticle } from '../../shared/types';
+import { Card, Articles, ApiArticle, SavedArticles } from '../../shared/types';
 
 function App() {
   const [articles, setArticles] = useState<Articles>({
@@ -16,7 +16,7 @@ function App() {
     displayedCards: [],
   });
 
-  const [savedArticles, setSavedArticles] = useState<Articles>({
+  const [savedArticles, setSavedArticles] = useState<SavedArticles>({
     cards: [],
     numDisplayed: 0,
     displayedCards: [],

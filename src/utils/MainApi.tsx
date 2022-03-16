@@ -1,4 +1,4 @@
-import { Card } from '../shared/types';
+import { SavedCard, Card } from '../shared/types';
 import checkResponse from './apiHelpers';
 import { BASE_URL } from './constants';
 
@@ -13,7 +13,7 @@ class AritcleAPIRequests {
     this.token = token;
   }
 
-  create(article: Card): Promise<{ data: Card }> {
+  create(article: Card): Promise<{ data: SavedCard }> {
     return fetch(`${BASE_URL}/articles/`, {
       method: 'POST',
       headers: {
@@ -40,7 +40,7 @@ class AritcleAPIRequests {
       .then((data) => data);
   }
 
-  getSavedArticles(): Promise<{ data: Card[] }> {
+  getSavedArticles(): Promise<{ data: SavedCard[] }> {
     return fetch(`${BASE_URL}/articles`, {
       method: 'GET',
       headers: {
