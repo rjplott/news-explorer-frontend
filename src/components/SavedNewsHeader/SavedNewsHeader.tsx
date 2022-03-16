@@ -20,7 +20,7 @@ const SavedNewsHeader = ({
   isLoggedIn,
   handleLogout,
 }: Props): JSX.Element => {
-  const user: User = useContext(CurrentUserContext);
+  const user: User | null = useContext(CurrentUserContext);
 
   const determineKeywords = (): string => {
     const keywords: Keywords = {};
@@ -52,7 +52,9 @@ const SavedNewsHeader = ({
       <div className='saved-news-header__text-wrapper'>
         <p className='saved-news-header__intro'>Saved articles</p>
         <h1 className='saved-news-header__title'>
-          {`${user.name}, you have ${articles.cards.length} saved articles`}
+          {`${user !== null ? user.name : 'User'}, you have ${
+            articles.cards.length
+          } saved articles`}
         </h1>
         <p className='saved-news-header__keywords'>
           By keywords:

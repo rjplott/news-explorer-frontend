@@ -54,7 +54,7 @@ export default function Navigation({
 
   const handleCloseMenu = (): void => setIsMenuOpen(false);
 
-  const user: User = useContext(CurrentUserContext);
+  const user: User | null = useContext(CurrentUserContext);
 
   if (!isLoggedIn && typeof onSignInClick !== 'undefined') {
     const handleLoginClick = (): void => {
@@ -157,7 +157,9 @@ export default function Navigation({
                   : ''
               }`}
             >
-              <span className='navigation__user-name'>{user.name}</span>
+              <span className='navigation__user-name'>
+                {user !== null ? user.name : ''}
+              </span>
               <img
                 src={path === '/saved-news' ? logoutLight : logout}
                 alt='Logout icon'
